@@ -1,0 +1,26 @@
+This is the project repository for CUHK/CSCI5180, 2011 Fall, managed by Pili HU and Yichao LI. 
+
+>>1. Citation Note
+
+If you find anything useful and want to build your future work on it, please cite this page properly. One suggested entry:
+---
+Pili HU and Yichao LI, 2011, Community Detection on 2-Hop Topology, https://github.com/Czlyc/2C-Web-Research
+---
+One suggested BibTex entry:
+---
+@MISC{hu2011-cd2hop,
+	author = {Hu Pili and Li Yichao},
+	title = {Community Detection on 2-Hop Topology},
+	howpublished = {GitHub, https://github.com/Czlyc/2C-Web-Research},
+	month = {12},
+	year = {2011},
+	note = {course project of CUHK/CSCI5180},
+}
+---
+
+>>2. File Description
+
+
+>>3. Acknowledgement
+
+The authors would like to thank the following people for their contribution of personal data: Bo WANG, Hongshu LIAO, Huan CHEN, Shouxi LUO, Xiaoyu Luo, Xinyue ZHENG, Yan WANG, Yi LUO. 
