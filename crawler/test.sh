@@ -2,17 +2,13 @@
 #20111130
 #hupili
 #---
-#the uni-entry of this crawler
+#the test version of 'run.sh'
 #
 #usage:
-#1. copy 'info/post.login.template' to 'info/post.login'
-#2. modify 'post.login' using your own account
-#3. issue command: bash ./test.sh
-#4. check data files in 'data' directory against the 'Guide'
-#5. issue command: nohup bash ./run.sh & 
-#6. you can watch the progress using: tail -f log
+#   * please follow the 'Guide' or see 'run.sh'
 
 . ./conf.sh
+export _TEST=1
 
 echo "[$0]===start===" >> log
 
@@ -43,7 +39,12 @@ echo $myid > $data/rootid
 
 bash ./get-friend.sh $myid 0
 total=`./analyze-friend-page.sh $tmp/friend.html`
-bash ./loop-friend1.sh $myid $total > $data/data.friend1
+if [[ $total > 2 ]] ; then
+	cur=2
+else
+	cur=$total
+fi
+bash ./loop-friend1.sh $myid $cur | tail -n 2 > $data/data.friend1
 echo "[$0] get level 1 list done" >> log
 
 bash ./loop-friend2.sh $data/data.friend1

@@ -14,12 +14,17 @@ fi
 
 for id in `cut -f1 $input` 
 do
-	if [[ -e data.friend2/$id ]] ; then
+	if [[ -e $data/data.friend2/$id ]] ; then
 		echo "[$0] skip $id" >> log
 		continue
 	fi
 	./get-friend.sh $id 0
 	total=`./analyze-friend-page.sh $tmp/friend.html`
 	echo "[$0] id=$id total=$total" >> log
-	./loop-friend1.sh $id $total > data.friend2/$id
+	if [[ $_TEST == "1" ]] ; then
+		#only download 1 page for test
+		./loop-friend1.sh $id 1 > $data/data.friend2/$id
+	else
+		./loop-friend1.sh $id $total > $data/data.friend2/$id
+	fi
 done

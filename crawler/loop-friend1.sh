@@ -17,7 +17,9 @@ for ((page=0;page<$total_page;page=page+1)) do
 	ret=$?
 	echo "[$0] page=$page ret=$ret" >> log
 	#./analyze-friend.sh friend.html >> $output_file
-	./analyze-friend.sh friend.html 
+	./analyze-friend.sh tmp/friend.html 
 	delay=`expr $RANDOM % 4`
 	sleep $delay
 done
+
+exit 0 
