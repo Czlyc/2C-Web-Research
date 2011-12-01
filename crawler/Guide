@@ -1,6 +1,40 @@
 The is the guide regarding the use of our Renren Crawler.
 
-System Requirement:
+>>Important Notice
+
+This folder may contain your personal data(including login account). Please DO NOT share it with anyone else. The author only asks for 'data' directory, which contains the topology and institution label. 
+
+>>System Requirement:
 1. bash
 2. wget
 3. perl
+
+>>Usage:
+1. copy 'info/post.login.template' to 'info/post.login'
+2. modify 'post.login' using your own account
+3. issue command: bash ./test.sh
+    (estimated to be several seconds)
+4. check data files in 'data' directory against the 'Guide'
+5. issue command: nohup bash ./run.sh & 
+    (estimated to be several hours)
+6. you can watch the progress using: tail -f log
+7. if you see this line "[./run.sh]===end===", the crawling completes. 
+
+>>'post.login' sample
+
+'post.login.template' contains a string: 'origURL=%2Fhome.do&email={login email address}&password={password}&login=%E7%99%BB%E5%BD%95'
+
+If your email address for renren.com is 'abc@xyz.com' and your password is '123', the resultant 'post.login' file should be:
+'origURL=%2Fhome.do&email=abc@xyz.com&password=123&login=%E7%99%BB%E5%BD%95'
+
+>>Test Data Check:
+
+You should see these files under 'data' directory after 'test.sh':
+1. 'rootid', which contains your renren ID
+2. 'data.friend1', which contains two lines of level one friends
+3. 'data.friend2', each file corresponds to one of the level one friends. 
+    data format is the same as that of 'data.friend1'
+
+>>Policy of Privacy 
+
+Many thanks if you can provide your data in 'data' directory to the authors. We will never share this raw data with any 3rd party. Your data will be isomorphically transformed before we use it in the successive study. In order to protect every participant, the transformation formula will be kept secret to HU, Pili only.  
