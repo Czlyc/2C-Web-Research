@@ -1,6 +1,8 @@
 #!/bin/bash
 #get the second cycle
 
+. ./conf.sh
+
 if [[ $# == 1 ]] ; then
 	input=$1
 else
@@ -17,7 +19,7 @@ do
 		continue
 	fi
 	./get-friend.sh $id 0
-	total=`./analyze-friend-page.sh friend.html`
+	total=`./analyze-friend-page.sh $tmp/friend.html`
 	echo "[$0] id=$id total=$total" >> log
 	./loop-friend1.sh $id $total > data.friend2/$id
 done

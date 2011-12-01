@@ -1,1 +1,6 @@
 The is the guide regarding the use of our Renren Crawler.
+
+System Requirement:
+1. bash
+2. wget
+3. perl
