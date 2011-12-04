@@ -45,6 +45,12 @@ You should see these files under 'data' directory after 'test.sh':
 3. 'data.friend2', each file corresponds to one of the level one friends. 
     data format is the same as that of 'data.friend1'
 
+>>Troubleshooting for Failed Test:
+
+1. Login 3g.renren.com using a browser. If you always encounter validation code, you may need to check the 'Manual Login' section. 
+2. Check 'tmp/home.html'. If you see an identical home page as logging in with the browser, the login process is successful. Otherwise, it fails. 
+3. Please send console output and 'log' file to Pili for further troubleshooting. 
+
 >>Manual Login
 
 (under construction)
