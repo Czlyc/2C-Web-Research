@@ -10,8 +10,11 @@ This folder may contain your personal data(including login account). Please DO N
 3. perl
 
 >>Usage:
+
+Before you start, please try login '3g.renren.com' using a browser. If you always encounter validation code(ÑéÖ¤Âë), the following full automated procedure can not work. Please jump to the section 'Manual Login'.
+
 1. copy 'info/post.login.template' to 'info/post.login'
-2. modify 'post.login' using your own account
+2. modify 'post.login' using your own account(see below for details)
 3. issue command: bash ./test.sh
     (estimated to be several seconds)
 4. check data files in 'data' directory against the 'Guide'
@@ -24,8 +27,15 @@ This folder may contain your personal data(including login account). Please DO N
 
 'post.login.template' contains a string: 'origURL=%2Fhome.do&email={login email address}&password={password}&login=%E7%99%BB%E5%BD%95'
 
-If your email address for renren.com is 'abc@xyz.com' and your password is '123', the resultant 'post.login' file should be:
-'origURL=%2Fhome.do&email=abc@xyz.com&password=123&login=%E7%99%BB%E5%BD%95'
+Assume your email address for renren.com is 'abc@xyz.com' and your password is '1#2&3': 
+1. Encode the account:(don't miss quotes)
+    $./encoder.sh "abc@xyz.com"
+    abc%40xyz.com
+2. Encode the password:
+	$./encoder.sh "1#2&3"
+	1%232%263
+3. Substitute variables in 'post.login' using the encoded version accordingly. The resultant 'post.login' file should be:
+    'origURL=%2Fhome.do&email=abc%40xyz.com&password=1%232%263&login=%E7%99%BB%E5%BD%95'
 
 >>Test Data Check:
 
@@ -34,6 +44,10 @@ You should see these files under 'data' directory after 'test.sh':
 2. 'data.friend1', which contains two lines of level one friends
 3. 'data.friend2', each file corresponds to one of the level one friends. 
     data format is the same as that of 'data.friend1'
+
+>>Manual Login
+
+(under construction)
 
 >>Policy of Privacy 
 
