@@ -11,7 +11,7 @@ This folder may contain your personal data(including login account). Please DO N
 
 >>Usage:
 
-Before you start, please try login '3g.renren.com' using a browser. If you always encounter validation code(—È÷§¬Î), the following full automated procedure can not work. Please jump to the section 'Manual Login'.
+Before you start, please try login '3g.renren.com' using a browser. If you always encounter validation code(È™åËØÅÁ†Å), the following full automated procedure can not work. Please jump to the section 'Manual Login'.
 
 1. copy 'info/post.login.template' to 'info/post.login'
 2. modify 'post.login' using your own account(see below for details)
@@ -27,12 +27,12 @@ Before you start, please try login '3g.renren.com' using a browser. If you alway
 
 'post.login.template' contains a string: 'origURL=%2Fhome.do&email={login email address}&password={password}&login=%E7%99%BB%E5%BD%95'
 
-Assume your email address for renren.com is 'abc@xyz.com' and your password is '1#2&3': 
+Assume your email address for renren.com is 'abc@xyz.com'(inside the single quotes) and your password is '1#2&3': 
 1. Encode the account:(don't miss quotes)
-    $./encoder.sh "abc@xyz.com"
+    $./encoder.sh 'abc@xyz.com'
     abc%40xyz.com
 2. Encode the password:
-	$./encoder.sh "1#2&3"
+	$./encoder.sh '1#2&3'
 	1%232%263
 3. Substitute variables in 'post.login' using the encoded version accordingly. The resultant 'post.login' file should be:
     'origURL=%2Fhome.do&email=abc%40xyz.com&password=1%232%263&login=%E7%99%BB%E5%BD%95'
