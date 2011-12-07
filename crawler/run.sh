@@ -31,7 +31,8 @@ else
 	exit 255
 fi
 
-myid=`echo -n \`bash ./analyze-myid.sh tmp/home.html\``
+#myid=`echo -n \`bash ./analyze-myid.sh tmp/home.html\``
+myid=`echo -n \`bash ./analyze-myid.sh\``
 ret=$?
 if [[ $ret == 0 ]] ; then
 	echo "[$0] get myid: success" >> log

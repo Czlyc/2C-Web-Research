@@ -1,31 +1,30 @@
 #!/bin/bash
-#20111130
+#20111207
 #hupili
 #---
-#the test version of 'run.sh'
 #
-#usage:
-#   * please follow the 'Guide' or see 'run.sh'
+#test without login
 
 . ./conf.sh
 export _TEST=1
 
 echo "[$0]===start===" >> log
 
-rm -rf $tmp
-mkdir -p $tmp
+#rm -rf $tmp
+#mkdir -p $tmp
 rm -rf $data
 mkdir -p $data
 mkdir -p $data/data.friend2
-
-bash ./login.sh
-ret=$?
-if [[ $ret == 0 ]] ; then
-	echo "[$0] login: success" >> log
-else
-	echo "[$0] login: $ret" >> log
-	exit 255
-fi
+ 
+echo "[$0]assume you have already logged in" >> log
+#bash ./login.sh
+#ret=$?
+#if [[ $ret == 0 ]] ; then
+#	echo "[$0] login: success" >> log
+#else
+#	echo "[$0] login: $ret" >> log
+#	exit 255
+#fi
 
 #myid=`echo -n \`bash ./analyze-myid.sh tmp/home.html\``
 myid=`echo -n \`bash ./analyze-myid.sh\``
