@@ -2,7 +2,10 @@ The is the guide regarding the use of our Renren Crawler.
 
 >>Important Notice
 
-This folder may contain your personal data(including login account). Please DO NOT share it with anyone else. The author only asks for 'data' directory, which contains the topology and institution label. 
+This folder may contain your personal data(including login 
+account). Please DO NOT share it with anyone else. The 
+author only asks for 'data' directory, which contains the 
+topology and institution label. 
 
 >>System Requirement:
 1. bash
@@ -11,13 +14,17 @@ This folder may contain your personal data(including login account). Please DO N
 
 >>Usage:
 
-Before you start, please try login '3g.renren.com' using a browser. If you always encounter validation code(验证码), the following full automated procedure can not work. Please jump to the section 'Manual Login'.
+Before you start, please try login '3g.renren.com' using 
+a browser. If you always encounter validation code(验证码),
+the following full automated procedure can not work. 
+Please jump to the section 'Manual Login'.
 
 1. copy 'info/post.login.template' to 'info/post.login'
 2. modify 'post.login' using your own account(see below for details)
 3. issue command: bash ./test.sh
     (estimated to be several seconds)
-4. check data files in 'data' directory against the 'Guide'
+4. check data files in 'data' directory against this 'Guide'
+    (See section 'Test Data Check')
 5. issue command: nohup bash ./run.sh & 
     (estimated to be several hours)
 6. you can watch the progress using: tail -f log
@@ -25,17 +32,22 @@ Before you start, please try login '3g.renren.com' using a browser. If you alway
 
 >>'post.login' sample
 
-'post.login.template' contains a string: 'origURL=%2Fhome.do&email={login email address}&password={password}&login=%E7%99%BB%E5%BD%95'
+'post.login.template' contains a string: 
+'origURL=%2Fhome.do&email={login email address}&password={password}&login=%E7%99%BB%E5%BD%95'
+(without quotes)
 
-Assume your email address for renren.com is 'abc@xyz.com'(inside the single quotes) and your password is '1#2&3': 
+Assume your email address for renren.com is 'abc@xyz.com'
+(inside the single quotes) and your password is '1#2&3': 
 1. Encode the account:(don't miss quotes)
     $./encoder.sh 'abc@xyz.com'
     abc%40xyz.com
 2. Encode the password:
 	$./encoder.sh '1#2&3'
 	1%232%263
-3. Substitute variables in 'post.login' using the encoded version accordingly. The resultant 'post.login' file should be:
-    'origURL=%2Fhome.do&email=abc%40xyz.com&password=1%232%263&login=%E7%99%BB%E5%BD%95'
+3. Substitute variables in 'post.login' using the encoded 
+   version accordingly. The resultant 'post.login' file should be:
+'origURL=%2Fhome.do&email=abc%40xyz.com&password=1%232%263&login=%E7%99%BB%E5%BD%95'
+(without quotes)
 
 >>Test Data Check:
 
@@ -45,16 +57,60 @@ You should see these files under 'data' directory after 'test.sh':
 3. 'data.friend2', each file corresponds to one of the level one friends. 
     data format is the same as that of 'data.friend1'
 
+If you see non-meaningful output there, that means the test fails.
+Please see 'Troubleshooting for Failed Test' for further process. 
+Otherwise, the test succeeds, and please proceed to the formal 
+crawling procedure using 'run.sh'. 
+
 >>Troubleshooting for Failed Test:
 
-1. Login 3g.renren.com using a browser. If you always encounter validation code, you may need to check the 'Manual Login' section. 
-2. Check 'tmp/home.html'. If you see an identical home page as logging in with the browser, the login process is successful. Otherwise, it fails. 
-3. Please send console output and 'log' file to Pili for further troubleshooting. 
+1. Login 3g.renren.com using a browser. If you always encounter 
+   validation code, you may need to check the 'Manual Login' 
+   section. 
+2. Check 'tmp/home.html'. If you see an identical home page as 
+   logging in with the browser, the login process is successful. 
+   Otherwise, it fails. 
+3. Please send console output and 'log' file to Pili for further 
+   troubleshooting. 
 
 >>Manual Login
 
-(under construction)
+There are three steps in general:
+   1. Login using your browser. 
+   2. Modify 'info/user-agent' using the corresponding agent 
+      string of your browser; export cookies from you browser
+      to file 'tmp/cookies'. 
+   3. Use './test-nologin.sh' to test; use 'run-nologin.sh'
+      to start formal crawling. 
+
+Detailed description for Firefox:
+   1. Install two plugins: "httpfox", "export cookies". 
+   2. Start "httpfox". (shift + F2, or from the menu)
+   3. Push "start" to capture http message. 
+   4. Login renren.com and visit your own homepage. 
+   5. Stop capturing and find one record whose URL is:
+      'http://3g.renren.com/profile.do?id=xxxxxxxx'
+   6. From the 'Headers' panel, read the 'User-Agent' string. 
+   7. Copy the UA string to file 'info/user-agent'. 
+   8. Choose menu 'Tools -> Export Cookies'. 
+   9. Save the file to 'tmp/cookies'. 
+
+   10. Issue command: 'bash ./test-nologin.sh'
+   11. Check data in directory 'data'. 
+   12. (if test is passed)
+   	   Issue command: 'bash ./run-nologin.sh'
+
+Note that steps after (9) is the same as normal operation, 
+except for the scripts are '-nologin' version. 
+
+Other browsers can do the same job, but I don't know the 
+shortcut to perform this task. 
 
 >>Policy of Privacy 
 
-Many thanks if you can provide your data in 'data' directory to the authors. We will never share this raw data with any 3rd party. Your data will be isomorphically transformed before we use it in the successive study. In order to protect every participant, the transformation formula will be kept secret to HU, Pili only.  
+Many thanks if you can provide your data in 'data' directory 
+to the authors. We will never share this raw data with any 
+3rd party. Your data will be isomorphically transformed before 
+we use it in the successive study. In order to protect every 
+participant, the transformation formula will be kept secret 
+to HU, Pili only.  
