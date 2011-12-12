@@ -14,12 +14,22 @@ through a uniform interface -- the most generalized version.
 
 INPUT: 
    1. 'link' file from each observer. 
+      in the format:
+      "nodeID1" "\t" "nodeID2"
+      
    2. 'escape-vector' file(diff for three versions)
       in the format:
       "nodeID" "\t" "weight"
 
-The "weight" field in 'escape-vector' need not be normalized. 
-The PR calculator will normalize it for you. 
+NOTICE: 
+   1. The "weight" field in 'escape-vector' need not be normalized. 
+      The PR calculator will normalize it for you. 
+   2. Links in the 'link' file provided to this program is regarded 
+      as unidirectional edge. For bidirectional edge, just copy the 
+      two columns in reverse order and cat it to the original file. 
+      This is for more flexible control outside binary executable. 
+      A sample command can be:
+         awk -F"\t" 'BEGIN{OFS="\t"}{print $1,$2; print $2,$1}' link.uni > link.bi
 
 OUTPUT:
    1. the random walk reach probability. 
