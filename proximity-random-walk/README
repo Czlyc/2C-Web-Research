@@ -1,1 +1,29 @@
 proximity measurements, random walk based
+1. Pagerank
+2. Personalized Pagerank
+   2.1 Unsupervised version(only root node share escape probability)
+   2.2 Semi-supervised version(a set of given node)
+3. Simrank(*)
+
+(*) Not implemented due to lack of time. 
+
+>>Interface Description
+
+All three Pagerank related algorithms will be implemented 
+through a uniform interface -- the most generalized version.
+
+INPUT: 
+   1. 'link' file from each observer. 
+   2. 'escape-vector' file(diff for three versions)
+      in the format:
+      "nodeID" "\t" "weight"
+
+The "weight" field in 'escape-vector' need not be normalized. 
+The PR calculator will normalize it for you. 
+
+OUTPUT:
+   1. the random walk reach probability. 
+      in the format:
+      "nodeID" "\t" "probability"
+
+
