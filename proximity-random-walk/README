@@ -23,7 +23,8 @@ INPUT:
 
 NOTICE: 
    1. The "weight" field in 'escape-vector' need not be normalized. 
-      The PR calculator will normalize it for you. 
+      The PR calculator will normalize it for you. Nodes that are
+      not set in this file will be initialized with 0 weight. 
    2. Links in the 'link' file provided to this program is regarded 
       as unidirectional edge. For bidirectional edge, just copy the 
       two columns in reverse order and cat it to the original file. 
