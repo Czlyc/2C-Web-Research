@@ -1,0 +1,30 @@
+Proximity Measure functions
+
+Here are 3 Proximity Measure functions:
+
+Common Neighbors - commonN.py
+Acamic/Adar score - adamicS.py
+Jaccards coefficient - jaccC.py
+
+How to invoke them:
+
+The format invoke methods are same:
+
+<xxx.py> argument1 argument2 argument3
+
+Which:
+argument1 = Input File Name
+argument2 = The value of i, i is the number of root node
+argument3 = Output File Name
+
+Input file format (most probably the file "link"):
+
+| nodeID_1 | nodeID_2 |
+-----------------------
+|          |          |
+
+Output file format:
+
+| nodeID | proximity value |
+----------------------------
+|        |                 |
