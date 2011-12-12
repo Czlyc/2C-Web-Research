@@ -8,9 +8,9 @@ for i in `ls -1 testcase`
 do
 	echo "----begin test $i"
 	path="testcase/$i"
-	./pagerank $path/link $page/escape-vector $page/output
+	./pagerank $path/link $path/escape-vector $path/output `cat $path/alpha`
 	if [[ -e $path/stdout ]] ; then
-		diff $path/stdout $page/output
+		diff $path/stdout $path/output
 	fi
 	echo "----end test $i"
 done
