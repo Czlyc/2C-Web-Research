@@ -1,0 +1,5 @@
+
+this is the upgraded version of testcase1, which 
+inserts a supernode with ID 3. The link topology 
+makes the result equal to 't1''s case when 'alpha'
+is set to 2/3
