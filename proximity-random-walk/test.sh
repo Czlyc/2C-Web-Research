@@ -8,7 +8,10 @@ for i in `ls -1 testcase`
 do
 	echo "----begin test $i"
 	path="testcase/$i"
-	./pagerank $path/link $path/escape-vector $path/output `cat $path/alpha`
+	a=`echo -n \`cat $path/alpha\``
+	ulimit -c unlimited 
+	./pagerank $path/link $path/escape-vector $path/output $a 2> log~
+	#echo ./pagerank $path/link $path/escape-vector $path/output `cat $path/alpha`
 	if [[ -e $path/stdout ]] ; then
 		diff $path/stdout $path/output
 	fi
