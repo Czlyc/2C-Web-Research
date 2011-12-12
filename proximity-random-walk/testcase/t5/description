@@ -1,0 +1,6 @@
+
+adapted from 't3'. the escape vector is biased. 
+this test case should be checked against 't4'. 
+
+the relative probability of node 0 ~ 2 should be
+the same. 

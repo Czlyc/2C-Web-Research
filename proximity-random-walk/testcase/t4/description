@@ -1,0 +1,6 @@
+
+adapted from 't2'. following links are deleted:
+   * 3 --> 0
+   * 3 --> 2
+
+the effect is a biased escape vector, as is in 't5'. 
