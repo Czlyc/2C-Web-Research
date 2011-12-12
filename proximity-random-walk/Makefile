@@ -1,6 +1,6 @@
 
-#FLAG=-O2
-FLAG= -g -Wall 
+FLAG=-O2
+#FLAG= -g -Wall 
 
 pagerank: pagerank.o
 	g++ -o pagerank pagerank.o

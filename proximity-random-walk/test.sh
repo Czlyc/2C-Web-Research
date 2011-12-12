@@ -6,7 +6,7 @@
 
 for i in `ls -1 testcase`
 do
-	echo "----begin test $i"
+	echo "----begin test $i: `date`"
 	path="testcase/$i"
 	a=`echo -n \`cat $path/alpha\``
 	ulimit -c unlimited 
@@ -15,7 +15,7 @@ do
 	if [[ -e $path/stdout ]] ; then
 		diff $path/stdout $path/output
 	fi
-	echo "----end test $i"
+	echo "----end test $i: `date`"
 done
 
 exit 0 
