@@ -11,7 +11,7 @@ version of institution. For the observer, he/she may have
 several institutions. In this case, the institution label 
 is set to the biggest one based on our knowledge. 
 
->> Raw Data Format -- 'label'
+>> Raw Data Format -- 'link'
 line format: nodeid1 '\t' nodeid2
 
 The link is directed. That means, from the observer's point
