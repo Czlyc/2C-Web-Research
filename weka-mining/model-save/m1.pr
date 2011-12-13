@@ -1,0 +1,71 @@
+=== Run information ===
+
+Scheme:weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a
+Relation:     data
+Instances:    26297
+Attributes:   4
+              pr_all1
+              pr_root
+              pr_high
+              class
+Test mode:user supplied test set: size unknown (reading incrementally)
+
+=== Classifier model (full training set) ===
+
+Sigmoid Node 0
+    Inputs    Weights
+    Threshold    -2.342517647248984
+    Node 2    1.437792104393216
+    Node 3    1.353225761144748
+Sigmoid Node 1
+    Inputs    Weights
+    Threshold    2.3425176472489837
+    Node 2    -1.4377921043932276
+    Node 3    -1.3532257611447354
+Sigmoid Node 2
+    Inputs    Weights
+    Threshold    22.552030346998727
+    Attrib pr_all1    28.63380956472509
+    Attrib pr_root    1.9682851342191758
+    Attrib pr_high    -7.481337032584229
+Sigmoid Node 3
+    Inputs    Weights
+    Threshold    17.710041428701242
+    Attrib pr_all1    24.79137470144017
+    Attrib pr_root    -4.492816859771732
+    Attrib pr_high    -1.3229005518331964
+Class 1
+    Input
+    Node 0
+Class 0
+    Input
+    Node 1
+
+
+Time taken to build model: 21.83 seconds
+
+=== Evaluation on test set ===
+=== Summary ===
+
+Correctly Classified Instances       22913               87.1283 %
+Incorrectly Classified Instances      3385               12.8717 %
+Kappa statistic                          0.0381
+Mean absolute error                      0.2619
+Root mean squared error                  0.337 
+Relative absolute error                116.0572 %
+Root relative squared error            100.299  %
+Total Number of Instances            26298     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.025     0.003      0.589     0.025     0.048      0.661    1
+                 0.997     0.975      0.873     0.997     0.931      0.661    0
+Weighted Avg.    0.871     0.849      0.836     0.871     0.816      0.661
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+    86  3325 |     a = 1
+    60 22827 |     b = 0
+

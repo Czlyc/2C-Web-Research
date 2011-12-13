@@ -1,0 +1,102 @@
+=== Run information ===
+
+Scheme:weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a
+Relation:     data
+Instances:    26298
+Attributes:   7
+              pr_all1
+              pr_root
+              pr_high
+              common
+              adamic
+              jaccards
+              class
+Test mode:user supplied test set: size unknown (reading incrementally)
+
+=== Classifier model (full training set) ===
+
+Sigmoid Node 0
+    Inputs    Weights
+    Threshold    -2.4077809906398047
+    Node 2    3.4684759743349036
+    Node 3    0.5810510170069582
+    Node 4    1.8936123357234573
+    Node 5    0.4385249186120394
+Sigmoid Node 1
+    Inputs    Weights
+    Threshold    2.4080925198481484
+    Node 2    -3.4684712419903176
+    Node 3    -0.556707196801187
+    Node 4    -1.876321734185195
+    Node 5    -0.5036922792154639
+Sigmoid Node 2
+    Inputs    Weights
+    Threshold    32.80825291599857
+    Attrib pr_all1    115.86932439903701
+    Attrib pr_root    -29.706705281756204
+    Attrib pr_high    -17.88171804302063
+    Attrib common    -0.8014589315512203
+    Attrib adamic    -18.630241243642057
+    Attrib jaccards    -15.134281069838838
+Sigmoid Node 3
+    Inputs    Weights
+    Threshold    -0.6914916352025481
+    Attrib pr_all1    -0.08672942179045445
+    Attrib pr_root    1.4095194499101877
+    Attrib pr_high    1.3808765480366585
+    Attrib common    0.5582483249683392
+    Attrib adamic    0.4438525120618189
+    Attrib jaccards    0.4417179231680674
+Sigmoid Node 4
+    Inputs    Weights
+    Threshold    -0.36937158046810475
+    Attrib pr_all1    -0.07031525804208652
+    Attrib pr_root    2.6660976279439432
+    Attrib pr_high    1.958710233308842
+    Attrib common    0.5241687379370585
+    Attrib adamic    0.23657667601324442
+    Attrib jaccards    0.2908965510226809
+Sigmoid Node 5
+    Inputs    Weights
+    Threshold    -0.7517482591757777
+    Attrib pr_all1    -0.057047748401886124
+    Attrib pr_root    1.3252015605241636
+    Attrib pr_high    1.2174144786559904
+    Attrib common    0.5534518312670292
+    Attrib adamic    0.4340226278035063
+    Attrib jaccards    0.5526070401982942
+Class 1
+    Input
+    Node 0
+Class 0
+    Input
+    Node 1
+
+
+Time taken to build model: 41.2 seconds
+
+=== Evaluation on test set ===
+=== Summary ===
+
+Correctly Classified Instances       22924               87.1734 %
+Incorrectly Classified Instances      3373               12.8266 %
+Kappa statistic                          0.0812
+Mean absolute error                      0.261 
+Root mean squared error                  0.333 
+Relative absolute error                115.6385 %
+Root relative squared error             99.1357 %
+Total Number of Instances            26297     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.057     0.007      0.549     0.057     0.104      0.643    1
+                 0.993     0.943      0.876     0.993     0.931      0.643    0
+Weighted Avg.    0.872     0.822      0.834     0.872     0.824      0.643
+
+=== Confusion Matrix ===
+
+     a     b   <-- classified as
+   195  3213 |     a = 1
+   160 22729 |     b = 0
+
