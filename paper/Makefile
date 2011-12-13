@@ -1,3 +1,3 @@
 
 clean:
-	rm -f *.aux *.log *~
+	rm -f *.aux *.log *~ *.toc
