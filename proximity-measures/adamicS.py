@@ -8,13 +8,13 @@ i = int(sys.argv[2])
 outputFileName = sys.argv[3]
 
 N, amLines = fileProcess.deal_input(inputFileName)
-
+f = 1
 sumN = list()
 for j in amLines:
     kRange = tuple(set(N[i]) & set(N[j]))
     eachsum = 0
     for k in kRange:
-        eachsum += (float(1) / math.log(len(N[k])))
+        eachsum += (float(1) / (math.log(len(N[k]))+f))
     sumN += [eachsum]
 
 
