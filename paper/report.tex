@@ -174,12 +174,12 @@ metrics, together with explanation of using them in our context:
 		
 		\item Adamic/Adar score:
 		\begin{equation}
-			Adamic/Adar(i,j) = \sum_{k \in N(i) \cap N(j) }{\frac{1}{\log{|N(k)|}}}
+			Adamic/Adar(i,j) = \sum_{k \in N(i) \cap N(j) }{\frac{1}{\log{|N(k)|+1}}}
 			\label{eq:adar}
 		\end{equation}
 		Adamic/Adar can be seen as an extension of simple common neighbours, which 
 		take the neighbour's degree into consideration. The contribution from 
-		each common neighbour $k$ is weighted as $\frac{1}{\log{|N(k)|}}$. 
+		each common neighbour $k$ is weighted as $\frac{1}{\log{|N(k)|+1}}$. 
 		Higher degree nodes may stant for public pages, or very well-known people 
 		in the network. Sharing such kind of common neighbour is a much weaker 
 		evidence that two people are in the same community. Thus the it is given 
