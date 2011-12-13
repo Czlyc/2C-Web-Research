@@ -28,3 +28,11 @@ Output file format:
 | nodeID | proximity value |
 ----------------------------
 |        |                 |
+
+How to invoke prunGraph function:
+
+<purnGraph.py> argument1 argument2
+
+Which:
+argument1 = Original link file
+argument2 = Decreased link file by removing i (when |N[i]=1|) in the Graph
