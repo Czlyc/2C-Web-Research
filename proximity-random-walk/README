@@ -21,6 +21,9 @@ INPUT:
       in the format:
       "nodeID" "\t" "weight"
 
+   3. 'alpha' a number in (0,1), the transfer ratio. 
+      The random walker escape with probability (1-alpha). 
+
 NOTICE: 
    1. The "weight" field in 'escape-vector' need not be normalized. 
       The PR calculator will normalize it for you. Nodes that are
