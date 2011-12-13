@@ -5,7 +5,8 @@
 
 LIB_BIB= \
 		 "/home/hpl/library/database/social-network/mylibrary.bib" \
-		 "/home/hpl/library/database/social-network/community-detection/mylibrary.bib" 
+		 "/home/hpl/library/database/social-network/community-detection/mylibrary.bib" \
+		 "/home/hpl/library/database/internet-measurement/mylibrary.bib" 
 
 TMP_LIST= \
 		  gen_bib.tex \
