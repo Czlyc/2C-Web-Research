@@ -10,8 +10,8 @@ How to invoke qualFuns.py:
 <qualFuns.py> argument1 argument2 argument3
 
 Which:
-argument1 = node link
-argument2 = node with label
+argument1 = node link file
+argument2 = node with label file
 argument3 = the name of output file
 
 Output file format:
