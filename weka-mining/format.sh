@@ -23,7 +23,16 @@ join tmp/feature.s tmp/testing.s > tmp/testing.join
 
 cat weka.header > training.arff
 cut -d" " -f2- tmp/training.join | sed 's/ /, /g' >> training.arff
+cat weka.header.simple > training.simple.arff
+cut -d" " -f5- tmp/training.join | sed 's/ /, /g' >> training.simple.arff
+cat weka.header.pr > training.pr.arff
+cut -d" " -f2,3,4,8 tmp/training.join | sed 's/ /, /g' >> training.pr.arff
+
 cat weka.header > testing.arff
 cut -d" " -f2- tmp/testing.join | sed 's/ /, /g' >> testing.arff
+cat weka.header.simple > testing.simple.arff
+cut -d" " -f5- tmp/testing.join | sed 's/ /, /g' >> testing.simple.arff
+cat weka.header.pr > testing.pr.arff
+cut -d" " -f2,3,4,8 tmp/testing.join | sed 's/ /, /g' >> testing.pr.arff
 
 exit 0 
