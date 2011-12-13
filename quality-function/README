@@ -1,4 +1,20 @@
-quality functions:
+3 quality functions:
 1. Normalized Cut
 2. Conductance
 3. Modularity
+
+All these quality value are calculated in qualFuns.py
+
+How to invoke qualFuns.py:
+
+<qualFuns.py> argument1 argument2 argument3
+
+Which:
+argument1 = node link
+argument2 = node with label
+argument3 = the name of output file
+
+Output file format:
+Ncut_S\t<value>
+Modularity_Q\t<value>
+Conductance_S\t<value>
