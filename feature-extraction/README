@@ -1,0 +1,7 @@
+Wapper scripts to extract features from raw data. 
+
+The wapper will invoke those modules:
+1. proximity-measres/commonN.py
+2. aproximity-measres/damicS.py
+3. proximity-measres/jaccC.py
+4. proximity-random-walk/pagerank (need compile first) 
