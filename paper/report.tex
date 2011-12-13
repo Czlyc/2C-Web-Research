@@ -1,0 +1,389 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8x]{inputenc}
+\usepackage{ucs}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{fancyvrb}
+\usepackage{url}
+\author{HU, Pili and LI, Yichao}
+\title{Community Detection on 2-Hop Topology}
+
+\newcommand{\question}{\textbf{---NEED-REVIEW-HERE---}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+	Community detection in social networks has drawn great interest
+	in recent decades, especially inspired by the emerge of wide 
+	online social network sites. In this paper, we study the two-hop 
+	topology from several observers in the "renren.com" network. 
+	Some important statistics are calculated first, along with 
+	some visualization. Then we compute mining(results)
+	 \question
+
+	This document serves as the report of CSCI5180 course 
+	project\cite{csci5180_lecture,csci5180_tutorial}. 
+	For more information, codes, and data, please refer to 
+	our open source repository\cite{hu2011-cd2hop}. 
+	
+\end{abstract}
+
+\pagebreak
+\tableofcontents
+\pagebreak
+
+\section{Introduction}
+
+Community detection has drawn great interest in the near decade. 
+The explosion of online Social Network Sites make the study more 
+practical but challenging. Traditional methodology aims at 
+optimizing certain global metric. The resultant graph partition 
+can thus be regarded as communities. The motivation of detecting 
+communities on 2-hop topology comes in two folds: 
+\begin{enumerate}
+	\item \textbf{Data Availability}. The global topology of 
+	those SNS is kept confidential. However, users are allowed 
+	to view their buddies profile by default. This gives us the 
+	chance to construct a 2-hop subgraph from the whole graph. 
+	Take a step further, outsiders can always observe some forwarding 
+	sequences of tweet/status. This helps to reconstruct a 
+	subgraph more than 2-hop from the observer. The methodology 
+	developed here can thus be extended to such situations. 
+	\item \textbf{Computation Availability}. Although those SNS 
+	providers have access to the global topology, it is computationally
+	intractable to perform some well-developed global optimization. 
+	Local heuristics are widely used in many applications. 
+\end{enumerate}
+
+\section{Data Preparation and Preprocessing}
+
+\subsection{Data Source}
+
+The data source used in this paper is "renren.com", which is the 
+most popular SNS in mainland China. At the mean while, "renren.com" 
+has the following good characteristics:
+\begin{itemize}
+	\item Web UI of "3g.renren.com" is very clean. Cawling through
+	this interface doesn't require any API calls.  
+	\item Renren is a real name dense graph connected mainly through 
+	real communities. Intuitively speaking, 
+	people who are close to the observer should be observed within 
+	this 2-hop topology with high probability. 
+	\item Institution label for all nodes in the observed subgraph
+	is available on "renren.com". It makes model validation easier
+	and automated. If the model is proven effective, we can adapt 
+	it to other SNS's. 
+\end{itemize}
+
+
+
+\section{Statistics}
+
+\section{Feature Selection}
+
+\subsection{Random Walk Based Techniques}
+
+The rationale behind random walk is: the nearer a node
+is to observer, it can be reached with a higher probability by a random 
+	walker starting from observer. PageRank is one of the most classical work 
+	in this field.
+
+We shortlist three variations\cite{aggarwal2011social} of the original 
+PageRank, together with the explanation of using them in our context:
+		\begin{itemize}
+			\item PageRank with escape probability:
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{1}}{n}
+				\label{eq:pr}
+			\end{equation}
+			where $A$ is the transition matrix, typically the adjacency matrix,
+			and $\alpha$ is the transfer ratio. $ \overrightarrow{v} $ is 
+			the resultant PageRank value. 
+			
+			In our graph, the link is very sparse for edge node, which 
+			represents the friend of observer's friend. They provide 
+			many dangling links, which influences the outcome of 
+			original PageRank algorithm. These nodes may appear as probability
+			sinks. By introducing in escape probability, such sinks can be eliminated. 
+			
+			Our graph is rooted and thus biased at the observer. So the
+			rank output by this algorithm can be a proximity 
+			measure between other nodes and observer. 
+			
+			\item Personalized PageRank:
+			\begin{equation}
+				\overrightarrow{v} = \alpha A^{\rm T}\overrightarrow{v}
+				+ (1-\alpha)\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
+				\label{eq:ppr}
+			\end{equation}
+			The difference from eqn(\ref{eq:pr}) is that, the all one's column vector 
+			$\overrightarrow{1}$ is 
+			substituted by a more general weight vector, also called the 
+			escape vector. This vector describes where and by what probability 
+			the random walker will escape to. 		
+			
+			With different escape vector $\overrightarrow{b}$, we can reach 
+			different goal:
+				\begin{itemize}
+					\item Unsupervised learning. Denote the subscript of observer
+					as $o$, then:
+					\begin{equation}
+						b_i=\lbrace{\begin{tabular}{cc}
+							1 & $i=o$ \\
+							0 & $i\neq o$ 
+						\end{tabular}}
+					\end{equation}
+					That means the random walker will always escape to the root node. 
+					Then the output can measure the proximity between root and other nodes. 
+					\item Semi-supervised learning. Denote the labeled set as 
+					$L$ and their label as $l_i$. The personalized escape 
+					vector can be:
+					\begin{equation}
+						b_i=\lbrace{\begin{tabular}{cc}
+							$l_i$ & $i \in L $ \\
+							$0$ & $i\notin L $ 
+						\end{tabular}}
+					\end{equation}
+					Typically, the miner can choose a subset of the nodes, which are
+					already known to share the same label with the observer. We assign
+					those nodes in set $L$ some positive weights. Then the random walker 
+					can escape to this set with different probability. The rantionale is, 
+					if one node is in our community, it is probable to be reached 
+					from some already known members.  
+				\end{itemize}
+
+		\end{itemize}  
+		
+\subsection{Simple Proximity Measures}
+
+Yet random walk based techniques are good proximity measures in many context, 
+there exists some simple but effective measures. We shortlist the following 
+metrics, together with explanation of using them in our context:
+	\begin{itemize}
+		\item Common Neighbours:
+		\begin{equation}
+			Common(i,j) = | N(i) \cap N(j) |
+			\label{eq:common}
+		\end{equation}
+		It is straight forward that if node $i$ shares more common neighbours 
+		with observer $o$, it is closer to observer. 
+		
+		\item Adamic/Adar score:
+		\begin{equation}
+			Adamic/Adar(i,j) = \sum_{k \in N(i) \cap N(j) }{\frac{1}{\log{|N(k)|}}}
+			\label{eq:adar}
+		\end{equation}
+		Adamic/Adar can be seen as an extension of simple common neighbours, which 
+		take the neighbour's degree into consideration. The contribution from 
+		each common neighbour $k$ is weighted as $\frac{1}{\log{|N(k)|}}$. 
+		Higher degree nodes may stant for public pages, or very well-known people 
+		in the network. Sharing such kind of common neighbour is a much weaker 
+		evidence that two people are in the same community. Thus the it is given 
+		a lower weight. The use of log scale stems from previous statistical studies, 
+		that node ranking tends to be Zipf distributed. \cite{breslau1999web-zipf}
+		
+		\item Jaccard's coefficient:
+		\begin{equation}
+			J(i,j)=\frac{|N(i) \cap N(j) |}{|N(i) \cup N(j) |}
+			\label{jaccards}
+		\end{equation}
+		This coefficient can be seen as another extension of common neighbours. 
+		It is effective when the graph is sparse. The numerator calculates the 
+		common neighbours of two nodes. The denominator takes their own size
+		into consideration. It's reasonable that two nodes with higher degree 
+		will have more common neighbours. The denominator act as a normalizer, 
+		which makes the output of different node pairs relative comparable. 
+	\end{itemize}
+
+\section{Single Feature Evalutaion}
+
+\subsection{Quality Functions}
+
+After we label the community of all nodes, we can calculate some quality 
+functions to indicate how well the community is detected. Different researchers
+have different preference of quality functions, to name a few:
+	\begin{itemize}
+		\item Normalized cut:
+		\begin{equation}
+			Ncut(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+			{\sum_{i \in S}{d(i)}}
+			+ \frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+			{\sum_{j \in \overline{S}}{d(j)}}					
+			\label{eq:ncut}	
+		\end{equation}
+		where $S$ is the set of one community, 
+		and $d(.)$ is the digree of a node, which is defined as 
+		$d(i)=\sum_j{A_{ij}}$.
+		
+		The smaller the value, the better community detection quality. 
+		Two numerators measure the number of inter community links, 
+		and the value is normalized by the number of intra community links. 
+		\item Conductance:
+		\begin{equation}
+			Conductance(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+			{\min \{ \sum_{i \in S}{d(i)}, \sum_{j \in \overline{S}}{d(j)}\}}	
+			\label{eq:conductance}			
+		\end{equation}
+		This quality function is positive related with eqn(\ref{eq:ncut}). 
+		When community sizes are highly skewed, conductance may provide 
+		better evaluation. 
+		\item Modularity:
+		\begin{equation}
+			Q=\sum_{i=1}^{K}{\left[ 
+			\frac{A(V_i,V_i)}{m} 
+			-\left( \frac{d(V_i)}{2m}\right)^2
+			\right]}
+			\label{eq:modularity}
+		\end{equation}
+		where 
+		\begin{equation}
+			A(V_i,V_j)= \sum_{u \in V_i,v \in V_j}{A_{uv}}
+		\end{equation}
+		and 
+		\begin{equation}
+			d(V_i)=\sum_{u \in V_i}{d_u}
+		\end{equation}
+		$K$ is the number of communities, which is 2 in our case
+		(we only distinguish whether the node is in the same community
+		with observer or not).
+		
+		The rationale behind modularity is the comparison with a random 
+		graph. The father resultant community is from a random graph, 
+		the better the quality. One of the advantages of modularity is 
+		that it is independent of the number of communities the graph is
+		divided into\cite{aggarwal2011social}. 
+	\end{itemize}
+	
+	Those quality functions are popular among different research 
+	groups. They also capture different characteristics of graphs. 
+	In this project, we'll check if these global metric can 
+	be used to evaluate our extreme local case. 
+
+
+\subsection{Receiver Operating Characteristics}
+
+Draw the Receiver Operating Curve by varying proximity threshold. 
+			(Different TP and FP rate)
+
+
+
+
+\question
+
+
+\section{Model Training and Testing}
+
+
+\section{Conclusion}
+
+
+\section{Future Work}
+
+As is in our proposal \cite{hu2011-cd2hop}, there are other metrics
+we want to try. Due to project time and report space, we only name 
+a few in this section:
+\begin{itemize}
+	\item Katz Score:
+			\begin{equation}
+				Katz(i,j)=\sum_{l=1}^{\infty}{\beta^lA^l(i,j)}
+			\end{equation}
+			The matrix series results in 
+			\begin{equation}
+				Katz = (I-\beta A)^{-1} - I
+			\end{equation}
+			By tuning $\beta$, this score can measure number of paths between 
+			two nodes, with preferred length range. 
+	\item Simrank:
+			\begin{equation}
+				s(a,b)=\frac{\gamma}{|I(a)||I(b)|}
+				\sum_{i \in I(a), j \in I(b)} s(i,j)
+			\end{equation}
+			This metric measures the expectation of $\gamma^l$, where $l$ equals 
+			the time when two random walkers start from $a$ and $b$ meet. By proper 
+			matrix construction, Simrank can be solved as an eigenvalue problem. 
+\end{itemize}
+For more information, interested readers are recommended to \cite{aggarwal2011social}. 
+
+
+
+\section*{Acknowledgements}
+
+The authors would like to thank the following people for their contribution of 
+personal data: 
+Bo WANG, Hongshu LIAO, Huan CHEN, Shouxi LUO, 
+Xiaoyu LUO, Xinyue ZHENG, Yan WANG, Yi LUO. 
+The authors appreciate brain storm discussion with professor Wing Lau 
+and Deyi Sun. 
+The authors would like to thank course instructors and TAs of CSCI5180. 
+
+
+%begin================bibliography======================
+
+%this seems impossible to merge automatically
+%at the same time, I don't want to construct .bib databse
+%for all these temporary entries. 
+%
+%my solution is to extract bibentries and paste them in 
+%the following {thebibliography} section
+%
+%
+%%\bibliographystyle{plain}
+%%\bibliography{mylibrary}
+
+%%%%GENBIBSTRING%%%%
+
+\begin{thebibliography}{99}
+
+%cut and paste section 
+%generate by 'make bib' from my bib database
+\bibitem{hu2011-cd2hop}
+Hu~Pili and Li~Yichao.
+\newblock Community detection on 2-hop topology.
+\newblock GitHub, https://github.com/Czlyc/2C-Web-Research, 12 2011.
+\newblock course project of CUHK/CSCI5180.
+
+\bibitem{aggarwal2011social}
+C.C. Aggarwal.
+\newblock {\em Social network data analytics}.
+\newblock Springer-Verlag New York Inc, 2011.
+
+\bibitem{breslau1999web-zipf}
+L.~Breslau, P.~Cao, L.~Fan, G.~Phillips, and S.~Shenker.
+\newblock Web caching and zipf-like distributions: Evidence and implications.
+\newblock In {\em INFOCOM'99. Eighteenth Annual Joint Conference of the IEEE
+  Computer and Communications Societies. Proceedings. IEEE}, volume~1, pages
+  126--134. IEEE, 1999.
+
+
+%temporary section
+	\bibitem{csci5180_lecture} CSCI5180, Data Mining Lecture Notes, 
+		\url{http://www.cse.cuhk.edu.hk/~lwchan/teaching/csc5180.html}
+	\bibitem{csci5180_tutorial} CSCI5180, Data Mining Tutorial Notes. 
+		(available in Moodle. Please contact the teacher/TA if you have 
+		interest)
+	\bibitem{wiki_roc} Receiver Operating Characteristics, 
+		\url{http://en.wikipedia.org/wiki/Receiver_operating_characteristic}
+\end{thebibliography}
+
+%end================bibliography======================
+
+
+\section*{Appendix}
+
+
+\section*{Declaration}
+
+Meta tools like PageRank, Adamic/Adar, etc, are learned from the book
+\textit{Social Network Data Analytics}. For original sources of these 
+algorithms, please refer to the bibliography pages of that book.
+
+The analysis/adaptation/extension/application of these tools and 
+the use in community detection on 2-hop topology mentioned 
+in this document is originality. Please refer to our open source 
+repository for citation issues.
+
+\end{document}
