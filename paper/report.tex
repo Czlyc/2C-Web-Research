@@ -16,7 +16,15 @@
 \maketitle
 
 \begin{abstract}
-	abst, \question
+	Community detection in social networks has drawn great interest
+	in recent decades, especially inspired by the emerge of wide 
+	online social network sites. 
+
+	This document serves as the report of CSCI5180 course 
+	project\cite{csci5180_lecture,csci5180_tutorial}. 
+	For more information, codes, and data, please refer to 
+	our open source repository\cite{hu2011-cd2hop}. 
+	 \question
 \end{abstract}
 
 \pagebreak
@@ -25,12 +33,157 @@
 
 \section{Introduction}
 
+Community detection has drawn great interest in the near decade. 
+The explosion of online Social Network Sites make the study more 
+practical but challenging. Traditional methodology aims at 
+optimizing certain global metric. The resultant graph partition 
+can thus be regarded as communities. The motivation of detecting 
+communities on 2-hop topology comes in two folds: 
+\begin{enumerate}
+	\item \textbf{Data Availability}. The global topology of 
+	those SNS is kept confidential. However, users are allowed 
+	to view their buddies profile by default. This gives us the 
+	chance to construct a 2-hop subgraph from the whole graph. 
+	Take a step further, outsiders can always observe some forwarding 
+	sequences of tweet/status. This helps to reconstruct a 
+	subgraph more than 2-hop from the observer. The methodology 
+	developed here can thus be extended to such situations. 
+	\item \textbf{Computation Availability}. Although those SNS 
+	providers have access to the global topology, it is computationally
+	intractable to perform some well-developed global optimization. 
+	Local heuristics are widely used in many applications. 
+\end{enumerate}
+
+\section{Data Preparation and Preprocessing}
+
+\subsection{Data Source}
+
+The data source used in this paper is "renren.com", which is the 
+most popular SNS in mainland China. At the mean while, "renren.com" 
+has the following good characteristics:
+\begin{itemize}
+	\item Web UI of "3g.renren.com" is very clean. Cawling through
+	this interface doesn't require any API calls.  
+	\item Renren is a real name dense graph connected mainly through 
+	real communities. Intuitively speaking, 
+	people who are close to the observer should be observed within 
+	this 2-hop topology with high probability. 
+	\item Institution label for all nodes in the observed subgraph
+	is available on "renren.com". It makes model validation easier
+	and automated. If the model is proven effective, we can adapt 
+	it to other SNS's. 
+\end{itemize}
+
+
+
 \section{Statistics}
 
 \section{Feature Selection}
 
+\subsection{Random Walk Based Techniques}
+
+
+		\begin{itemize}
+			\item PageRank with escape probability:
+			\begin{equation}
+				\overrightarrow{v} = (1-\alpha)P^{\rm T}\overrightarrow{v}
+				+ \frac{\alpha}{n}\overrightarrow{1}
+			\end{equation}
+			Our graph is rooted and thus biased at the observer. So the 
+			traditional rank output by this algorithm can be a proxity 
+			measurement between other nodes and observer. 
+			\item Personalized PageRank:
+			\begin{equation}
+				\overrightarrow{v} = (1-\alpha)P^{\rm T}\overrightarrow{v}
+				+ \alpha\frac{\overrightarrow{b}}{||\overrightarrow{b}||_1}
+			\end{equation}
+			With different escape vector $\overrightarrow{b}$, we can reach 
+			different goal:
+				\begin{itemize}
+					\item Unsupervised learning. Denote the subscript of observer
+					as $o$, then:
+					\begin{equation}
+						b_i=\lbrace{\begin{tabular}{cc}
+							1 & $i=o$ \\
+							0 & $i\neq o$ 
+						\end{tabular}}
+					\end{equation}
+					\item Semi-supervised learning. Denote the labeled set as 
+					$L$ and their label as $l_i$. The personalized escape 
+					vector can be:
+					\begin{equation}
+						b_i=\lbrace{\begin{tabular}{cc}
+							$l_i$ & $i \in L $ \\
+							$0$ & $i\notin L $ 
+						\end{tabular}}
+					\end{equation}
+				\end{itemize}
+
+		\end{itemize}  
+		
+\subsection{Simple Proximity Measures}
+
+		\begin{itemize}
+
+			\item Common Neighbours:
+			\begin{equation}
+				Common(i,j) = | N(i) \cap N(j) |
+			\end{equation}
+			\item Adamic/Adar score:
+			\begin{equation}
+				Adamic/Adar(i,j) = \sum_{k \in N(i) \cap N(j) }{\frac{1}{\log{|N(k)|}}}
+			\end{equation}
+			Adamic/Adar can be seen as an extension of simple common neighbours, which 
+			take the neighbours degree into consideration. 
+			\item Jaccards coefficient:
+			\begin{equation}
+				J(i,j)=\frac{|N(i) \cap N(j) |}{|N(i) \cup N(j) |}
+			\end{equation}
+			This coefficient can be seen as another extension of common neighbours. 
+			It is effective when the graph is sparse. 
+		\end{itemize}
 
 \section{Single Feature Evalutaion}
+
+\subsection{Quality Functions}
+
+
+
+Evaluate some popular quality functions:
+				\begin{itemize}
+					\item Normalized cut:
+					\begin{equation}
+						Ncut(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+						{\sum_{i \in S}{d(i)}}
+						+ \frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+						{\sum_{j \in \overline{S}}{d(j)}}						
+					\end{equation}
+					\item Conductance:
+					\begin{equation}
+						Conductance(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+						{\min \{ \sum_{i \in S}{d(i)}, \sum_{j \in \overline{S}}{d(j)}\}}				
+					\end{equation}
+					\item Modularity:
+					\begin{equation}
+						Q=\sum_{i=1}^{k}{\left[ 
+						\frac{A(V_i,V_i)}{m} 
+						-\left( \frac{d(V_i)}{2m}\right)^2
+						\right]}
+					\end{equation}
+				\end{itemize}
+				Those quality functions are popular among different research 
+				groups. They also capture different characteristics of graphs. 
+				In this project, we'll check if these global metric can 
+				be used in our extreme local case. 
+
+
+\subsection{Quality Functions}
+
+Draw the Receiver Operating Curve by varying proximity threshold. 
+			(Different TP and FP rate)
+			
+
+\question
 
 
 \section{Model Training and Testing}
@@ -39,18 +192,92 @@
 \section{Conclusion}
 
 
+\section{Future Work}
+
+As is in our proposal \cite{hu2011-cd2hop}, there are other metrics
+we want to try. Due to project time and report space, we only name 
+a few in this section:
+\begin{itemize}
+	\item Katz Score:
+			\begin{equation}
+				Katz(i,j)=\sum_{l=1}^{\infty}{\beta^lA^l(i,j)}
+			\end{equation}
+			The matrix series results in 
+			\begin{equation}
+				Katz = (I-\beta A)^{-1} - I
+			\end{equation}
+			By tuning $\beta$, this score can measure number of paths between 
+			two nodes, with preferred length range. 
+	\item Simrank:
+			\begin{equation}
+				s(a,b)=\frac{\gamma}{|I(a)||I(b)|}
+				\sum_{i \in I(a), j \in I(b)} s(i,j)
+			\end{equation}
+			This metric measures the expectation of $\gamma^l$, where $l$ equals 
+			the time when two random walkers start from $a$ and $b$ meet. By proper 
+			matrix construction, Simrank can be solved as an eigenvalue problem. 
+\end{itemize}
+For more information, interested readers are recommended to \cite{aggarwal2011social}. 
+
+
+
 \section*{Acknowledgements}
 
+
+%begin================bibliography======================
+
+%this seems impossible to merge automatically
+%at the same time, I don't want to construct .bib databse
+%for all these temporary entries. 
+%
+%my solution is to extract bibentries and paste them in 
+%the following {thebibliography} section
+%
+%
+%%\bibliographystyle{plain}
+%%\bibliography{mylibrary}
+
+%%%%GENBIBSTRING%%%%
+
 \begin{thebibliography}{99}
+
+%cut and paste section 
+%generate by 'make bib' from my bib database
+\bibitem{hu2011-cd2hop}
+Hu~Pili and Li~Yichao.
+\newblock Community detection on 2-hop topology.
+\newblock GitHub, https://github.com/Czlyc/2C-Web-Research, 12 2011.
+\newblock course project of CUHK/CSCI5180.
+
+\bibitem{aggarwal2011social}
+C.C. Aggarwal.
+\newblock {\em Social network data analytics}.
+\newblock Springer-Verlag New York Inc, 2011.
+
+
+%temporary section
 	\bibitem{csci5180_lecture} CSCI5180, Data Mining Lecture Notes, 
 		\url{http://www.cse.cuhk.edu.hk/~lwchan/teaching/csc5180.html}
 	\bibitem{csci5180_tutorial} CSCI5180, Data Mining Tutorial Notes. 
-		(available in Moodle)
+		(available in Moodle. Please contact the teacher/TA if you have 
+		interest)
 \end{thebibliography}
+
+%end================bibliography======================
 
 
 \section*{Appendix}
 
 
+\section*{Declaration}
+
+Meta tools like PageRank, Adamic/Adar, etc, are learned from the book
+\textit{Social Network Data Analytics}. For original sources of these 
+algorithms, please refer to the bibliography pages of that book.
+
+The analysis/adaptation/extension/application of these tools and 
+the use in community detection on 2-hop topology mentioned 
+in this document is originality. Please refer to our open source 
+repository for citation issues.
 
 \end{document}
