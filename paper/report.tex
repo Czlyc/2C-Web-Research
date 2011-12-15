@@ -173,13 +173,24 @@ metrics, together with explanation of using them in our context:
 		with observer $o$, it is closer to observer. 
 		
 		\item Adamic/Adar score:
+%change the equation back
+%no need to do "1" opeartion, since this divide-by-zero flaw results
+%from the situation where i==j, and one of the neighbours only have 
+%degree 1. 
+%=== 
+%		\begin{equation}
+%			Adamic/Adar(i,j) = \sum_{k \in N(i) \cap N(j) }{\frac{1}{\log{|N(k)|+1}}}
+%			\label{eq:adar}
+%		\end{equation}
+%===
 		\begin{equation}
-			Adamic/Adar(i,j) = \sum_{k \in N(i) \cap N(j) }{\frac{1}{\log{|N(k)|+1}}}
+			Adamic/Adar(i,j) = \sum_{k \in N(i) \cap N(j) }{\frac{1}{\log{|N(k)|}}}
 			\label{eq:adar}
 		\end{equation}
 		Adamic/Adar can be seen as an extension of simple common neighbours, which 
 		take the neighbour's degree into consideration. The contribution from 
-		each common neighbour $k$ is weighted as $\frac{1}{\log{|N(k)|+1}}$. 
+%		each common neighbour $k$ is weighted as $\frac{1}{\log{|N(k)|+1}}$. 
+		each common neighbour $k$ is weighted as $\frac{1}{\log{|N(k)|}}$. 
 		Higher degree nodes may stant for public pages, or very well-known people 
 		in the network. Sharing such kind of common neighbour is a much weaker 
 		evidence that two people are in the same community. Thus the it is given 
