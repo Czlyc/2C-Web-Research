@@ -39,8 +39,17 @@ int main(int argc, char **argv){
 	while ( (diff = average_diff(cur_probability, g_probability)) > eps ){
 		fprintf(stderr, "iteration %d: %f\n", iteration_count, diff) ;
 		g_probability = cur_probability ;
+		if ( iteration_count >= MAX_ITERATION ){
+			break ;
+		}
 		iteration_count ++ ;	
 		next_iteration(cur_probability) ;
+	}
+
+	if ( iteration_count >= MAX_ITERATION ){
+		fprintf(stderr, "iteration terminated: due to MAX_ITERATION=%d\n", MAX_ITERATION) ;
+	} else {
+		fprintf(stderr, "iteration terminated: due to eps=%f\n", eps) ;
 	}
 
 	output() ;
