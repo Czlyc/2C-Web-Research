@@ -1,0 +1,82 @@
+Sigmoid Node 0
+    Inputs    Weights
+    Threshold    -1.0970225068132242
+    Node 2    0.9276633347098948
+    Node 3    1.071771899558829
+    Node 4    3.517543623583222
+    Node 5    1.0114908089231467
+    Node 6    0.9434384947433533
+Sigmoid Node 1
+    Inputs    Weights
+    Threshold    1.0970351671193626
+    Node 2    -0.9797274296638402
+    Node 3    -1.0864261338683885
+    Node 4    -3.517094768186279
+    Node 5    -0.9410124420824747
+    Node 6    -0.9471029621035705
+Sigmoid Node 2
+    Inputs    Weights
+    Threshold    0.6094033032399575
+    Attrib pr_all1    -0.36669688798182476
+    Attrib pr_root    -0.18947306993515683
+    Attrib pr_high    15.352973749195815
+    Attrib common    10.570996951634429
+    Attrib adamic    5.995701796915343
+    Attrib jacc    13.17093806084811
+    Attrib pr_all1_super    -46.67688524418028
+    Attrib pr_root_super    0.12703871873717934
+    Attrib pr_high_super    4.8464718659429735
+Sigmoid Node 3
+    Inputs    Weights
+    Threshold    0.48525459152712
+    Attrib pr_all1    -0.4742259780078956
+    Attrib pr_root    -0.2996619700430063
+    Attrib pr_high    19.245701272944913
+    Attrib common    12.297307404288908
+    Attrib adamic    7.598364206813277
+    Attrib jacc    14.685221521669124
+    Attrib pr_all1_super    -55.45838218914868
+    Attrib pr_root_super    -0.07662559851046305
+    Attrib pr_high_super    5.240695254472572
+Sigmoid Node 4
+    Inputs    Weights
+    Threshold    3.9516156351473817
+    Attrib pr_all1    -2.590880976235312
+    Attrib pr_root    1.6244970282048772
+    Attrib pr_high    7.711479518249436
+    Attrib common    9.980745848013909
+    Attrib adamic    1.555219609452164
+    Attrib jacc    13.224344740663955
+    Attrib pr_all1_super    -31.70259605473181
+    Attrib pr_root_super    2.2136778572142024
+    Attrib pr_high_super    5.689963439362233
+Sigmoid Node 5
+    Inputs    Weights
+    Threshold    0.6350407626866476
+    Attrib pr_all1    -0.37260486330001025
+    Attrib pr_root    -0.18492640284966563
+    Attrib pr_high    16.050587224084424
+    Attrib common    10.87043806615996
+    Attrib adamic    6.321669255028889
+    Attrib jacc    13.459941135883504
+    Attrib pr_all1_super    -48.38377930112607
+    Attrib pr_root_super    0.16291255944472055
+    Attrib pr_high_super    4.9427105498138735
+Sigmoid Node 6
+    Inputs    Weights
+    Threshold    0.6540128393430098
+    Attrib pr_all1    -0.3733110799000433
+    Attrib pr_root    -0.0682085664927097
+    Attrib pr_high    14.892408544430888
+    Attrib common    10.574267141538353
+    Attrib adamic    5.85158849650887
+    Attrib jacc    13.165922205310316
+    Attrib pr_all1_super    -46.15925362050435
+    Attrib pr_root_super    0.23256826736223837
+    Attrib pr_high_super    4.750086965336855
+Class 1
+    Input
+    Node 0
+Class 0
+    Input
+    Node 1
