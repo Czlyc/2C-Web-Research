@@ -2,6 +2,8 @@
 #hupili
 #20111213
 
+#obsolete
+
 #format raw data into weka's arff
 
 if [[ $# == 1 ]] ; then
