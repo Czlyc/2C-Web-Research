@@ -6,6 +6,8 @@
 \usepackage{amssymb}
 \usepackage{fancyvrb}
 \usepackage{url}
+\usepackage{graphicx}
+
 \author{HU, Pili and LI, Yichao}
 \title{Community Detection on 2-Hop Topology}
 
@@ -58,6 +60,12 @@ communities on 2-hop topology comes in two folds:
 	Local heuristics are widely used in many applications. 
 \end{enumerate}
 
+The potential application may be:
+\begin{enumerate}
+	\item \textbf{Friend recommendation}. 
+	\item \textbf{Targeted advertisement}. 
+\end{enumerate}
+
 \section{Data Preparation and Preprocessing}
 
 \subsection{Data Source}
@@ -75,9 +83,91 @@ has the following good characteristics:
 	\item Institution label for all nodes in the observed subgraph
 	is available on "renren.com". It makes model validation easier
 	and automated. If the model is proven effective, we can adapt 
-	it to other SNS's. 
+	it to other SNS's, where institution label may be not available.  
 \end{itemize}
 
+\subsection{Crawler}
+
+The crawler is developed using the following components:
+\begin{itemize}
+	\item \begin{verbatim}
+		perl
+	\end{verbatim}
+	\item \begin{verbatim}
+		wget
+	\end{verbatim}
+	\item \begin{verbatim}
+		bash
+	\end{verbatim}
+\end{itemize}
+
+We fake HTTP login and page requests like an ordinary user. 
+Random delay between two adjacent requests is introduced 
+to mitigate the automation pattern. 
+
+For more details, interested readers are recommended to 
+our project \cite{hu2011-cd2hop}. The crawler is under 
+directory 'crawler', together with detailed instructions 
+on how to deploy one yourself. 
+
+\subsection{Preprocessing}
+
+The preprocessing steps is as follows:
+\begin{enumerate}
+	\item Parse crawled web pages to get user ID and institution name. 
+	\item Create one vertex for each person crawled. 
+	\item Create one edge for each friend relationship. 
+	\item Do isomorphic tranformation on the original graph
+	\cite{wiki_iso_graph}. Vertex number and insitution label 
+	is shuffled according to a psudorandom sequence. 
+	This is to protect privacy of our volunteer observers. 
+\end{enumerate}
+
+After preprocessing, we get the raw data, which is in the
+following format:
+\begin{Verbatim}
+---'link'---
+NodeID1 '\t' NodeID2
+NodeID1 '\t' NodeID3
+...
+
+---'node'---
+NodeID1 '\t' Label1
+NodeID2 '\t' Label2
+...
+\end{Verbatim}
+
+To facilitate our model training and evaluation, 
+we divide our data into two parts randomly and equally: 
+one training set and one testing set. 
+
+\section{Notations}
+
+The notations used throughout this paper are gathered 
+in table(\ref{tbl:notation}). 
+
+\begin{table}[htb]
+	\centering
+	\caption{Notations}
+	\label{tbl:notation}
+	\begin{tabular}{c|c}
+	\hline
+	Symbol & Explanation \\
+	\hline
+	$n$ & node number \\
+	$m$ & edge number \\
+	$A$ & adjacency matrix \\
+	$A_{ij}$ & 1 if node $i$ and node $j$ are directly \\
+	& connected, 0 otherwise\\
+	$N(i)$ & neighbourhood of $i$, namely \\
+	& $N(i) = \{j | A_{ij} = 1 \}$ \\
+	$d(i)$ & degree of node $i$ \\
+	& $d(i) = \sum_{j}{A_{ij}}$ \\
+	$o$ & observer \\
+	$\overrightarrow{v}$ & ranking vector of nodes \\
+	\hline
+	\end{tabular}
+\end{table}
 
 
 \section{Statistics}
@@ -264,9 +354,9 @@ have different preference of quality functions, to name a few:
 		
 		The rationale behind modularity is the comparison with a random 
 		graph. The father resultant community is from a random graph, 
-		the better the quality. One of the advantages of modularity is 
+		the better the quality. "One of the advantages of modularity is 
 		that it is independent of the number of communities the graph is
-		divided into\cite{aggarwal2011social}. 
+		divided into"\cite{aggarwal2011social}. 
 	\end{itemize}
 	
 	Those quality functions are popular among different research 
@@ -287,6 +377,216 @@ Draw the Receiver Operating Curve by varying proximity threshold.
 
 
 \section{Model Training and Testing}
+
+%=====================data=====
+
+%observer 2, full nodes. MLP, default. 
+%=== Detailed Accuracy By Class ===
+%
+%               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+%                 0.383     0.031      0.599     0.383     0.468      0.746    1
+%                 0.969     0.617      0.929     0.969     0.949      0.746    0
+%Weighted Avg.    0.906     0.554      0.894     0.906     0.897      0.746
+%
+%=== Confusion Matrix ===
+%
+%     a     b   <-- classified as
+%  1812  2915 |     a = 1
+%  1212 38180 |     b = 0
+
+%observer 2, cut degree leq1. MLP, default. 
+%
+%=== Detailed Accuracy By Class ===
+%
+%               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+%                 0.534     0.202      0.699     0.534     0.606      0.72     1
+%                 0.798     0.466      0.661     0.798     0.723      0.72     0
+%Weighted Avg.    0.675     0.342      0.679     0.675     0.668      0.72 
+%
+%=== Confusion Matrix ===
+%
+%    a    b   <-- classified as
+% 1382 1205 |    a = 1
+%  595 2348 |    b = 0
+%  %
+
+%observer 2, cut degree leq2. MLP, default.
+%=== Detailed Accuracy By Class ===
+%
+%               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+%                 0.987     0.916      0.639     0.987     0.776      0.69     1
+%                 0.084     0.013      0.793     0.084     0.151      0.69     0
+%Weighted Avg.    0.645     0.575      0.697     0.645     0.54       0.69 
+%
+%=== Confusion Matrix ===
+%
+%    a    b   <-- classified as
+% 1706   23 |    a = 1
+%  963   88 |    b = 0
+
+
+%observer 2, only level 1. MLP, default
+%=== Detailed Accuracy By Class ===
+%
+%               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+%                 0.685     0.173      0.813     0.685     0.744      0.801    1
+%                 0.827     0.315      0.704     0.827     0.761      0.801    0
+%Weighted Avg.    0.752     0.241      0.761     0.752     0.752      0.801
+%
+%=== Confusion Matrix ===
+%
+%  a  b   <-- classified as
+% 74 34 |  a = 1
+% 17 81 |  b = 0
+
+%==============================data end ================
+
+\subsection{MLP with Full Topology}
+
+Our first experiment is to train an MLP with full topology. 
+Let observer 2 be an example, the confusion matrix on testing 
+data is shown in table(\ref{tbl:cm_o2_full}). 
+
+\begin{table}[htb]
+	\centering
+	\caption{Confusion Matrix: MLP, Observer2, Full Topology}
+	\label{tbl:cm_o2_full}
+	\begin{tabular}{cc|c}
+	\hline
+a & b & \textbf{$\leftarrow$ classified as}\\	
+	\hline
+1812 &  2915 &    $a = 1$ \\
+1212 & 38180 &    $b = 0$\\
+	\hline
+	\end{tabular}
+\end{table}
+
+The precision is 0.599 and recall is 0.383. The overall accuracy 
+is 0.906. Although the overall accuracy is very high, we can 
+conclude that this classification is of low application value. 
+The True Negative population is very large, which means our trained 
+MLP tends to classify nodes into class 0. 
+
+One of our targeted use of the predicted labels can be friend 
+recommendation. It's nonsense to recommend a lot of friends 
+at a time. So our application is not sensitive to recall rate. 
+Thus we work towards higher precision in the successive experiments, 
+and at the same time avoid making the predication trivial. 
+
+\subsection{MLP without Degree 1 Nodes}
+
+\question
+
+According to our previous statistics, large amount of nodes
+are of degree one. This doesn't necessarily mean the real 
+degree, but means the degree within our observation. 
+The 2-hop topology is so limited that we see many leaf nodes. 
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.5\linewidth]{fig/illustration_2hop_level2.jpg}
+	\caption{Illustration of Two Levels}
+	\label{fig:illu_l2}
+\end{figure}
+
+Fig(\ref{fig:illu_l2}) illustrates one part of the 2-hop 
+topology. The real friend relationship is bidirectional. 
+The arrows in the illustration just represents the direction 
+of our crawler. Nodes n5 and n6 stand for two typical situations 
+of those level 2 nodes. It's very probable that n6 with single link 
+from a level 1 node is not in the observer's community. 
+On the contrary, n5, which many level 1 nodes point to is very likely
+to be in the same community as observer. 
+
+Nodes like n6 will bring up priori probability of class 0 as shown in 
+the previous experiment. We eliminate all nodes with degree 1, and 
+run the training stage again. Result confusion matrix is shown 
+in table(\ref{tbl:cm_o2_d1}). 
+
+\begin{table}[htb]
+	\centering
+	\caption{Confusion Matrix: MLP, Observer2, without Degree 1}
+	\label{tbl:cm_o2_d1}
+	\begin{tabular}{cc|c}
+	\hline
+a & b & \textbf{$\leftarrow$ classified as}\\	
+	\hline
+ 1382 &1205 &    $a = 1$\\
+  595 &2348 &    $b = 0$\\
+	\hline
+	\end{tabular}
+\end{table}
+
+The precision is now 0.699 and recall is  0.534. 
+Both metrics are improved, while the overall accuracy 
+degrades to 0.675. Bearing our potential application in mind, 
+this result is better, which means if we target 10 nodes 
+from the predicted positive class, we may have a chance
+of 70\% to hit observer's community. 
+
+\subsection{MLP without Degree 2}
+
+Take the last experiment further, it's rational to 
+think whether eliminating more nodes can help. 
+
+We train the same model after eliminating degree 2 nodes. 
+The result confusion matrix is shown in table().
+
+\begin{table}[htb]
+	\centering
+	\caption{Confusion Matrix: MLP, Observer2, without Degree 2}
+	\label{tbl:cm_o2_d2}
+	\begin{tabular}{cc|c}
+	\hline
+a & b & \textbf{$\leftarrow$ classified as}\\	
+	\hline
+ 1706 &23 &    $a = 1$\\
+  963 &88 &    $b = 0$\\
+	\hline
+	\end{tabular}
+\end{table}
+
+The precision is now 0.639 and recall is 0.987. 
+Though we get a very good recall rate, the precision 
+is lowered. Looking into the confusion matrix, 
+we find this classification becomes \textbf{trivial}. 
+It tends to predict class 1. Even a naive guess 
+that classifies all nodes into class 1 can reach 
+the precision of 0.62194 and recall 1.0. 
+
+With more lower degree nodes being eliminated, 
+we may think this problem becomes more significant. 
+Since the priori probability of class 1 increases, 
+the naive guess precision can increase by keeping 
+a 100\% recall. 
+
+\subsection{MLP with Only Level 1 Nodes}
+
+If we limit our mining scope to only level 1 nodes, 
+the application can not be friend recommendation, since 
+they have alreay established one link with observer. 
+Nevertheless, taking a look at the result is of great interest. 
+table(\ref{tbl:cm_o2_l1}) shows the result confusion matrix. 
+
+\begin{table}[htb]
+	\centering
+	\caption{Confusion Matrix: MLP, Observer2, Only Level 1 Nodes}
+	\label{tbl:cm_o2_l1}
+	\begin{tabular}{cc|c}
+	\hline
+a & b & \textbf{$\leftarrow$ classified as}\\	
+	\hline
+ 74 &34 &    $a = 1$\\
+  17 &81 &    $b = 0$\\
+	\hline
+	\end{tabular}
+\end{table}
+
+The precision is 0.813, and the recall is 0.685. 
+If we aim at the "community" defined as a group 
+of people sharing the same interest, rather than 
+those institutions, this result suggests targeted 
+advertisement can be performed effeciently. 
 
 
 \section{Conclusion}
@@ -319,7 +619,25 @@ a few in this section:
 \end{itemize}
 For more information, interested readers are recommended to \cite{aggarwal2011social}. 
 
+The links used in this study is mere static topology. 
+With 2-hop limit, the information can be extracted 
+is not abundant. In terms of data source, we propose 
+two promising directions:
+\begin{enumerate}
+	\item Dynamic link information. "renren.com" is a very 
+	dense graph. However, many edges are not effetive in the sense
+	that little information flow through them. We can 
+	build links using user interactions like status forwarding, 
+	blog reply, etc. 
+	\item Content based prediction. Note that links can only capture
+	static topology or dynamic interaction, but not content. Nodes in a 
+	well-defined community share similar content with very high 
+	probability. Combining topology and content may be a promising 
+	direction. 
+\end{enumerate}
 
+Similar thoughts have been proposed in many related literature, to name 
+a few\cite{boccaletti2006complex,aggarwal2011social}. 
 
 \section*{Acknowledgements}
 
@@ -369,6 +687,11 @@ L.~Breslau, P.~Cao, L.~Fan, G.~Phillips, and S.~Shenker.
   Computer and Communications Societies. Proceedings. IEEE}, volume~1, pages
   126--134. IEEE, 1999.
 
+\bibitem{boccaletti2006complex}
+S.~Boccaletti, V.~Latora, Y.~Moreno, M.~Chavez, and D.U. Hwang.
+\newblock Complex networks: Structure and dynamics.
+\newblock {\em Physics reports}, 424(4-5):175--308, 2006.
+
 
 %temporary section
 	\bibitem{csci5180_lecture} CSCI5180, Data Mining Lecture Notes, 
@@ -378,6 +701,10 @@ L.~Breslau, P.~Cao, L.~Fan, G.~Phillips, and S.~Shenker.
 		interest)
 	\bibitem{wiki_roc} Receiver Operating Characteristics, 
 		\url{http://en.wikipedia.org/wiki/Receiver_operating_characteristic}
+	\bibitem{weka} Weka, 
+		\url{http://www.cs.waikato.ac.nz/ml/weka/index.html}
+	\bibitem{wiki_iso_graph} Wikipedia, Isomorphic Graph, 
+		\url{http://en.wikipedia.org/wiki/Graph_isomorphism}
 \end{thebibliography}
 
 %end================bibliography======================
@@ -396,5 +723,10 @@ The analysis/adaptation/extension/application of these tools and
 the use in community detection on 2-hop topology mentioned 
 in this document is originality. Please refer to our open source 
 repository for citation issues.
+
+The data in our project repository is limited to research use only. 
+The authors of this paper own the transformed version. You are welcome
+to use them in your study but remember to make a notification to the 
+authors first. Our contact information is given in the project 'README' file. 
 
 \end{document}

@@ -5,3 +5,10 @@ The wapper will invoke those modules:
 2. aproximity-measres/damicS.py
 3. proximity-measres/jaccC.py
 4. proximity-random-walk/pagerank (need compile first) 
+
+>> Invocation
+
+./run.sh 
+
+This command will generate 'feature' file under 
+the raw data directories. 
