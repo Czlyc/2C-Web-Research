@@ -27,7 +27,7 @@ report.bbl : report.tex
 	#temporary file to assist bib generating
 	sed 's/%%%%GENBIBSTRING%%%%/\\bibliographystyle{plain} \\bibliography{mylibrary}/g' report.tex > gen_bib.tex
 	#generate the .aux which contains all reference
-	latex gen_bib
+	pdflatex gen_bib
 	#generate .bbl file to include in 'thebibliography'
 	bibtex gen_bib
 	#show !
