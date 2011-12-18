@@ -1,0 +1,42 @@
+#!/usr/bin/octave
+
+ARGV = argv ;
+ARGC = length(argv) ;
+
+if ARGC != 2 
+	fprintf(stdout, 'usage: ./plot-single.oct {fn_data} {fn_fig}') ;
+	exit(-1) ;
+endif
+
+fn_data = ARGV{1} ;
+fn_fig = ARGV{2} ;
+
+fid = fopen(fn_data, 'r') ;
+data = fscanf(fid, '%f', [2, inf])' ;
+fclose(fid) ;
+
+#degree = data(:,2) ;
+#
+#hist(degree) ;
+#print('-djpeg', fn_fig) ;
+
+data = data(data(:,2)>5, :) ;
+
+[out, outi] = sort(data(:,2)) ;
+sdata = flipud(data(outi,:)) ;
+l = length(sdata) ;
+x = log(1:l)' ;
+y = log(sdata(1:l,2)) ;
+%scatter(x,y,'*') ;
+plot(x,y) ;
+hold on ;
+%X = [x, ones(l, 1)] ;
+%[b, bint] = regress(y, X) ;
+%YY = X * b ; 
+%plot(x,YY, 'r') ;
+xlabel('log(order)') ;
+ylabel('log(degree)') ;
+title('Degree v.s. Rank') ;
+print(fn_fig, '-djpg', '-S510,500') ;
+
+exit(0) ;
