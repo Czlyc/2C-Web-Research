@@ -19,10 +19,10 @@ if ( ! -d $dir_raw ){
 	exit -1 ;
 }
 
-if ( -e $dir_output ){
-	print STDERR "output dir already exists: $dir_output\n" ;
-	exit -1 ;
-}
+#if ( -e $dir_output ){
+#	print STDERR "output dir already exists: $dir_output\n" ;
+#	exit -1 ;
+#}
 
 if ( ! -e $fn_dict ){
 	print STDERR "dict not exists: $fn_dict\n" ;
