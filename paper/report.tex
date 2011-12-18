@@ -7,6 +7,7 @@
 \usepackage{fancyvrb}
 \usepackage{url}
 \usepackage{graphicx}
+\usepackage{subfigure}
 
 \author{HU, Pili and LI, Yichao}
 \title{Community Detection on 2-Hop Topology}
@@ -39,6 +40,8 @@
 
 \section{Introduction}
 
+\subsection{Motivation}
+
 Community detection has drawn great interest in the near decade. 
 The explosion of online Social Network Sites make the study more 
 practical but challenging. Traditional methodology aims at 
@@ -60,11 +63,29 @@ communities on 2-hop topology comes in two folds:
 	Local heuristics are widely used in many applications. 
 \end{enumerate}
 
+\subsection{Application}
+
 The potential application may be:
 \begin{enumerate}
 	\item \textbf{Friend recommendation}. 
 	\item \textbf{Targeted advertisement}. 
 \end{enumerate}
+
+\subsection{Contribution}
+
+The contribution comes in three folds:
+\begin{enumerate}
+	\item Output a crawler specialized for "renren.com". 
+	\item Extract 9 proximity measures from 2-hop topology. 
+	Those meta tools can work on 200,000 edges in the order 
+	of seconds. They can facilitate future study. 
+	\item Train several Multi-Layer Perceptron(MLP)s to 
+	combine those proximity measures. 
+\end{enumerate}
+
+\subsection{Problem Definition}
+
+
 
 \section{Data Preparation and Preprocessing}
 
@@ -370,6 +391,19 @@ have different preference of quality functions, to name a few:
 Draw the Receiver Operating Curve by varying proximity threshold. 
 			(Different TP and FP rate)
 
+\begin{figure}[htb]
+\centering
+\subfigure[Common Neighbours]{
+\label{fig:roc_selected_common}
+\includegraphics[width=0.4\textwidth]{../roc/o2/fig/common.jpg}
+}
+\subfigure[PR: EV=Highest 3]{
+\label{fig:roc_selected_pr_high}
+\includegraphics[width=0.4\textwidth]{../roc/o2/fig/pr_high.jpg}
+}
+\caption{Selected ROC Curves}
+\label{fig:roc_selected}
+\end{figure}
 
 
 
@@ -591,6 +625,12 @@ advertisement can be performed effeciently.
 
 \section{Conclusion}
 
+This paper shows 2-hop link topology contains some information, 
+though it is limited. We highlight the following 
+observations from the study:
+\begin{enumerate}
+	\item 
+\end{enumerate}
 
 \section{Future Work}
 
@@ -712,6 +752,69 @@ S.~Boccaletti, V.~Latora, Y.~Moreno, M.~Chavez, and D.U. Hwang.
 
 \section*{Appendix}
 
+\subsection*{ROC Curve of Observer 2}
+
+ROC curves of 9 features are shown in fig(\ref{fig:roc_sub_all}).
+It's obvious that PageRank with escape vector using 3 highest 
+degree nodes and without super node performs the best alone, 
+see fig(\ref{fig:roc_sub_pr_high}). 
+
+\begin{figure}[htb]
+    \label{fig:subfigures}
+    \begin{center}
+%
+        \subfigure[Common Neighbour]{%
+            \label{fig:roc_sub_common}
+            \includegraphics[width=0.3\textwidth]{../roc/o2/fig/common.jpg}
+        }%
+        \subfigure[Ademic/Adar]{%
+           \label{fig:roc_sub_adamic}
+           \includegraphics[width=0.3\textwidth]{../roc/o2/fig/adamic.jpg}
+        }
+        \subfigure[Jaccard's]{%
+            \label{fig:roc_sub_jacc}
+            \includegraphics[width=0.3\textwidth]{../roc/o2/fig/jacc.jpg}
+        }\\%
+
+        \subfigure[PR:EV=All 1's]{%
+            \label{fig:roc_sub_pr_all1}
+            \includegraphics[width=0.3\textwidth]{../roc/o2/fig/pr_all1.jpg}
+        }%
+        \subfigure[PR:EV=High 3]{%
+           \label{fig:roc_sub_pr_high}
+           \includegraphics[width=0.3\textwidth]{../roc/o2/fig/pr_high.jpg}
+        }
+        \subfigure[PR:EV=Root]{%
+            \label{fig:roc_sub_pr_root}
+            \includegraphics[width=0.3\textwidth]{../roc/o2/fig/pr_root.jpg}
+        }\\%
+        
+        \subfigure[PR:EV=All 1's(+SN)]{%
+            \label{fig:roc_sub_pr_all1_super}
+            \includegraphics[width=0.3\textwidth]{../roc/o2/fig/pr_all1_super.jpg}
+        }%
+        \subfigure[PR:EV=High 3 (+SN)]{%
+           \label{fig:roc_sub_pr_high_super}
+           \includegraphics[width=0.3\textwidth]{../roc/o2/fig/pr_high_super.jpg}
+        }
+        \subfigure[PR:EV=Root(+SN)]{%
+            \label{fig:roc_sub_pr_root_super}
+            \includegraphics[width=0.3\textwidth]{../roc/o2/fig/pr_root_super.jpg}
+        }\\%
+%
+    \end{center}
+    \caption{%
+        ROC Curve of 9 Features
+     }%
+     \label{fig:roc_sub_all}
+\end{figure}
+
+
+\subsection*{ROC Algorithm}
+
+This algorithm runs in $O(N)$ time, where 
+$N$ is the number of data points. 
+ 
 
 \section*{Declaration}
 
@@ -724,9 +827,10 @@ the use in community detection on 2-hop topology mentioned
 in this document is originality. Please refer to our open source 
 repository for citation issues.
 
+\textbf{\textit{
 The data in our project repository is limited to research use only. 
 The authors of this paper own the transformed version. You are welcome
 to use them in your study but remember to make a notification to the 
-authors first. Our contact information is given in the project 'README' file. 
+authors first. Our contact information is given in the project 'README' file. }}
 
 \end{document}
