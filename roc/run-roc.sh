@@ -10,7 +10,7 @@ for i in \
 	"$tmp/pr.all1.super" "$tmp/pr.root.super" "$tmp/pr.high.super" 
 do
 	echo $i
-	name=`echo -n $i | sed -e 's/tmp.*\///g' -e 's/\./_/g'`
+	name=`echo -n $i | sed -e 's/tmp.*\///g' -e 's/\./-/g'`
 	echo $name
 
 	./roc.pl $raw $i > $output/$name
