@@ -11,7 +11,7 @@ fi
 
 rootid=`echo -n \`cat $dir_raw/rootid \``
 num_all_node=`echo -n \`wc -l $dir_raw/node | awk '{print $1}'\``
-num_l1_node=`echo -n \`grep "^$rootid" $dir_raw/link | wc -l | awk '{print $1}'\``
+num_l1_node=`echo -n \`grep "^$rootid" $dir_raw/link | cut -f2 | sort -u | wc -l | awk '{print $1}'\``
 num_link=`echo -n \`wc -l $dir_raw/link | awk '{print $1}'\``
 observer=`echo $dir_raw | grep -o -P '\d\/?$'`
 
