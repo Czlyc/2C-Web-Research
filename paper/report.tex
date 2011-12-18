@@ -67,8 +67,16 @@ communities on 2-hop topology comes in two folds:
 
 The potential application may be:
 \begin{enumerate}
-	\item \textbf{Friend recommendation}. 
-	\item \textbf{Targeted advertisement}. 
+	\item \textbf{Friend recommendation}. This is one of the 
+	most important applications of SNS. Traditional ways
+	try to gather other information first, like school, company, etc. 
+	Then the program recommends friends based on this information.  
+	\item \textbf{Targeted advertisement}. Wide-sense community 
+	can represent a group of people sharing the same interests. Their
+	consumption pattern may be similar. Detecting such "communities"
+	in the context where nodes are not directly labeled(like forums, 
+	microblogs, etc) help social media advertisers to improve 
+	their lifting ratio. 
 \end{enumerate}
 
 \subsection{Contribution}
@@ -83,9 +91,17 @@ The contribution comes in three folds:
 	combine those proximity measures. 
 \end{enumerate}
 
+Data limitation(only 2-hop topology without content information)
+distinguishes our work from previous work. This is also 
+the most challenging part in our study. 
+
 \subsection{Problem Definition}
 
-
+Given one observer node in an SNS network, and 
+all nodes within 2-hop from the observer, together 
+with the links, try to predict whether a node is 
+in the same community with the observer. If so, 
+the class label is set to 1, otherwise 0. 
 
 \section{Data Preparation and Preprocessing}
 
@@ -192,8 +208,9 @@ in table(\ref{tbl:notation}).
 	\end{tabular}
 \end{table}
 
-
 \section{Statistics}
+
+
 
 \section{Feature Selection}
 
