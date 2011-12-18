@@ -24,8 +24,15 @@
 	online social network sites. In this paper, we study the two-hop 
 	topology from several observers in the "renren.com" network. 
 	Some important statistics are calculated first, along with 
-	some visualization. Then we compute mining(results)
-	 \question
+	some visualization. Then we extract 9 features from the 
+	2-hop topology. All features are evaluated alone using ROC first. 
+	Then we train multiple MLP models under different settings. 
+	
+	The most effective features in our study is PageRank with escape
+	vector to several in-community high degree nodes. 
+	By eliminating leaf nodes(degree=1), we can get a prediction
+	precision 0.699 and recall 0.534. The confusion matrix shows 
+	this result is not trivial. 
 
 	This document serves as the report of CSCI5180 course 
 	project\cite{csci5180_lecture,csci5180_tutorial}. 
@@ -217,6 +224,30 @@ Most edges of level 2 nodes are not present in our data.
 	\includegraphics[width=0.6\textwidth]{fig/o2_degree_geq5.jpg}
 	\caption{Observer2, Degree Distribution}
 	\label{fig:o2_degree}
+\end{figure}
+
+\section{Topology Visualization}
+
+In this study, we use NodeXL \cite{nodexl} to visualize our graph. 
+
+NodeXL is an open source Excel plugin. Though it is easy to use, 
+the process ability is not high enough for our large graph(10w order 
+of nodes and 20w order of edges). We do the following 
+pre-processing to make NodeXL work:
+\begin{enumerate}
+	\item Eliminate leaf nodes, whose degree is 1. 
+	\item Sample edges in the rest graph. 
+\end{enumerate}
+Note that "renren.com" is a dense graph. A typical node will have 
+more than 100 edges. This makes NodeXL hard to work. With random
+sampling, the topology can be visualized by NodeXL. fig(\ref{fig:topo_vis})
+shows the result. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{../visualization/sample1W_3.png}
+	\caption{Topology Visualization}
+	\label{fig:topo_vis}
 \end{figure}
 
 \section{Notations}
