@@ -10,6 +10,7 @@ LIB_BIB= \
 
 TMP_LIST= \
 		  gen_bib.tex \
+		  gen_bib.pdf \
 		  mylibrary.bib \
 		  *.aux \
 		  *.log \

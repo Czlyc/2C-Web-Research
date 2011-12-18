@@ -1,0 +1,43 @@
+#!/usr/bin/octave
+
+ARGV = argv ;
+ARGC = length(argv) ;
+
+if ARGC != 2 
+	fprintf(stdout, 'usage: ./plot-single.oct {fn_data} {fn_fig}') ;
+	exit(-1) ;
+endif
+
+fn_data = ARGV{1} ;
+fn_fig = ARGV{2} ;
+
+%fn_data = 'o2/data/common' ;
+%fn_fig = 'tmp.jpg' ;
+
+fid = fopen(fn_data, 'r') ;
+data = fscanf(fid, '%f', [4, inf])' ;
+fclose(fid) ;
+
+%false positive rate
+x = data(:, 4) ; 
+%true positive rate
+y = data(:, 3) ; 
+
+%sort x
+[sx, ind] = sort(x) ;
+sy = y(ind) ;
+
+%the following two line should work with MATLAB
+%not Octave....
+%myfig = figure ;
+%set(myfig,'Position',[100,100,600,300]) ;
+%figure('Position',[100, 100, 300, 150]);
+
+plot(sx, sy) ;
+xlabel('False Positive Rate') ;
+ylabel('True Positive Rate') ;
+title(cat('ROC', fn_data)) ;
+print('-djpeg', fn_fig, '-S600,510') ;
+%print('-djpeg', fn_fig) ;
+
+exit(0) ;
