@@ -178,6 +178,47 @@ To facilitate our model training and evaluation,
 we divide our data into two parts randomly and equally: 
 one training set and one testing set. 
 
+\section{Statistics}
+
+Basic statistics are shown in table(\ref{tbl:stat_basic}). 
+
+\begin{table}[htb]
+\caption{Basic Statistics}
+\label{tbl:stat_basic}
+\begin{tabular}{c|ccc}
+\hline
+Observer Seq. & \# of All Nodes & \# of Level 1 Nodes & \# of Links \\
+\hline
+1 & 52595 & 357 & 83820 \\
+2 & 88238 & 446 & 139224 \\
+3 & 129019 & 535 & 204006 \\
+4 & 46049 & 224 & 75654 \\
+5 & 48258 & 260 & 85479 \\
+6 & 22060 & 120 & 29860 \\
+7 & 43086 & 181 & 60719 \\
+8 & 175237 & 733 & 367785 \\
+\hline
+\end{tabular}
+\end{table}
+
+The number of nodes, number of level 1 nodes, and number of links
+are positive related.
+
+We plot observer2's nodes whose degree is greater than or equal to 5. 
+fig(\ref{fig:o2_degree}) shows the degree v.s. rank in log log scale. 
+We can see that the curve is not a linear line, as appears 
+in most Zipf like distribution scenario. The curve is 
+super linear, which means it is more skewed. This makes
+sense because we only have 2-hop topology from the observer. 
+Most edges of level 2 nodes are not present in our data. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{fig/o2_degree_geq5.jpg}
+	\caption{Observer2, Degree Distribution}
+	\label{fig:o2_degree}
+\end{figure}
+
 \section{Notations}
 
 The notations used throughout this paper are gathered 
@@ -207,9 +248,6 @@ in table(\ref{tbl:notation}).
 	\hline
 	\end{tabular}
 \end{table}
-
-\section{Statistics}
-
 
 
 \section{Feature Selection}
@@ -327,7 +365,11 @@ metrics, together with explanation of using them in our context:
 		in the network. Sharing such kind of common neighbour is a much weaker 
 		evidence that two people are in the same community. Thus the it is given 
 		a lower weight. The use of log scale stems from previous statistical studies, 
-		that node ranking tends to be Zipf distributed. \cite{breslau1999web-zipf}
+		that node ranking tends to be Zipf distributed\cite{breslau1999web-zipf}. 
+		In our case, we have already shown that the degree v.s. rank is not a Zipf 
+		like distribution. Finding a better substitution of the log function 
+		remains a future work. In this study, we keep the original format of 
+		Adamic/Adar score. 
 		
 		\item Jaccard's coefficient:
 		\begin{equation}
@@ -409,72 +451,9 @@ No. & Abbrevation & Explanation \\
 
 \section{Single Feature Evalutaion}
 
-\subsection{Quality Functions}
-
-After we label the community of all nodes, we can calculate some quality 
-functions to indicate how well the community is detected. Different researchers
-have different preference of quality functions, to name a few:
-	\begin{itemize}
-		\item Normalized cut:
-		\begin{equation}
-			Ncut(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
-			{\sum_{i \in S}{d(i)}}
-			+ \frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
-			{\sum_{j \in \overline{S}}{d(j)}}					
-			\label{eq:ncut}	
-		\end{equation}
-		where $S$ is the set of one community, 
-		and $d(.)$ is the digree of a node, which is defined as 
-		$d(i)=\sum_j{A_{ij}}$.
-		
-		The smaller the value, the better community detection quality. 
-		Two numerators measure the number of inter community links, 
-		and the value is normalized by the number of intra community links. 
-		\item Conductance:
-		\begin{equation}
-			Conductance(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
-			{\min \{ \sum_{i \in S}{d(i)}, \sum_{j \in \overline{S}}{d(j)}\}}	
-			\label{eq:conductance}			
-		\end{equation}
-		This quality function is positive related with eqn(\ref{eq:ncut}). 
-		When community sizes are highly skewed, conductance may provide 
-		better evaluation. 
-		\item Modularity:
-		\begin{equation}
-			Q=\sum_{i=1}^{K}{\left[ 
-			\frac{A(V_i,V_i)}{m} 
-			-\left( \frac{d(V_i)}{2m}\right)^2
-			\right]}
-			\label{eq:modularity}
-		\end{equation}
-		where 
-		\begin{equation}
-			A(V_i,V_j)= \sum_{u \in V_i,v \in V_j}{A_{uv}}
-		\end{equation}
-		and 
-		\begin{equation}
-			d(V_i)=\sum_{u \in V_i}{d_u}
-		\end{equation}
-		$K$ is the number of communities, which is 2 in our case
-		(we only distinguish whether the node is in the same community
-		with observer or not).
-		
-		The rationale behind modularity is the comparison with a random 
-		graph. The father resultant community is from a random graph, 
-		the better the quality. "One of the advantages of modularity is 
-		that it is independent of the number of communities the graph is
-		divided into"\cite{aggarwal2011social}. 
-	\end{itemize}
-	
-	Those quality functions are popular among different research 
-	groups. They also capture different characteristics of graphs. 
-	In this project, we'll check if these global metric can 
-	be used to evaluate our extreme local case. 
-
-
-\subsection{Receiver Operating Characteristics}
-
-The ROC curve plots True Positive Ratio v.s. False Positive Ratio
+Before we start complex mining, we want to examine the 
+efficacy of those features we get. The ROC curve plots 
+True Positive Ratio v.s. False Positive Ratio
 \cite{wiki_roc}, when some parameters are changed. 
 
 In this study, we evaluate each single feature's ROC by scaling 
@@ -780,6 +759,8 @@ observations from the study:
 
 \section{Future Work}
 
+\subsection{More Metrics}
+
 As is in our proposal \cite{hu2011-cd2hop}, there are other metrics
 we want to try. Due to project time and report space, we only name 
 a few in this section:
@@ -805,6 +786,8 @@ a few in this section:
 \end{itemize}
 For more information, interested readers are recommended to \cite{aggarwal2011social}. 
 
+\subsection{Broader Data Source}
+
 The links used in this study is mere static topology. 
 With 2-hop limit, the information can be extracted 
 is not abundant. In terms of data source, we propose 
@@ -825,6 +808,8 @@ two promising directions:
 Similar thoughts have been proposed in many related literature, to name 
 a few\cite{boccaletti2006complex,aggarwal2011social}. 
 
+\subsection{Fine-grained Variations of PR}
+
 The variations of PageRank have great potential. We
 shortlist a few possible directions:
 \begin{enumerate}
@@ -833,6 +818,68 @@ shortlist a few possible directions:
 	in the semi-supervised version of PPR, considering
 	both cost and accuracy. 
 \end{enumerate}
+
+\subsection{Quality Functions}
+
+After we label the community of all nodes, we can calculate some quality 
+functions to indicate how well the community is detected. Different researchers
+have different preference of quality functions, to name a few:
+	\begin{itemize}
+		\item Normalized cut:
+		\begin{equation}
+			Ncut(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+			{\sum_{i \in S}{d(i)}}
+			+ \frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+			{\sum_{j \in \overline{S}}{d(j)}}					
+			\label{eq:ncut}	
+		\end{equation}
+		where $S$ is the set of one community, 
+		and $d(.)$ is the digree of a node, which is defined as 
+		$d(i)=\sum_j{A_{ij}}$.
+		
+		The smaller the value, the better community detection quality. 
+		Two numerators measure the number of inter community links, 
+		and the value is normalized by the number of intra community links. 
+		\item Conductance:
+		\begin{equation}
+			Conductance(S)=\frac{\sum_{i \in S, j \in \overline{S}}{A(i,j)}}
+			{\min \{ \sum_{i \in S}{d(i)}, \sum_{j \in \overline{S}}{d(j)}\}}	
+			\label{eq:conductance}			
+		\end{equation}
+		This quality function is positive related with eqn(\ref{eq:ncut}). 
+		When community sizes are highly skewed, conductance may provide 
+		better evaluation. 
+		\item Modularity:
+		\begin{equation}
+			Q=\sum_{i=1}^{K}{\left[ 
+			\frac{A(V_i,V_i)}{m} 
+			-\left( \frac{d(V_i)}{2m}\right)^2
+			\right]}
+			\label{eq:modularity}
+		\end{equation}
+		where 
+		\begin{equation}
+			A(V_i,V_j)= \sum_{u \in V_i,v \in V_j}{A_{uv}}
+		\end{equation}
+		and 
+		\begin{equation}
+			d(V_i)=\sum_{u \in V_i}{d_u}
+		\end{equation}
+		$K$ is the number of communities, which is 2 in our case
+		(we only distinguish whether the node is in the same community
+		with observer or not).
+		
+		The rationale behind modularity is the comparison with a random 
+		graph. The father resultant community is from a random graph, 
+		the better the quality. "One of the advantages of modularity is 
+		that it is independent of the number of communities the graph is
+		divided into"\cite{aggarwal2011social}. 
+	\end{itemize}
+	
+	Those quality functions are popular among different research 
+	groups. They also capture different characteristics of graphs. 
+	In this project, we'll check if these global metric can 
+	be used to evaluate our extreme local case. 
 
 \section*{Acknowledgements}
 
@@ -900,6 +947,8 @@ S.~Boccaletti, V.~Latora, Y.~Moreno, M.~Chavez, and D.U. Hwang.
 		\url{http://www.cs.waikato.ac.nz/ml/weka/index.html}
 	\bibitem{wiki_iso_graph} Wikipedia, Isomorphic Graph, 
 		\url{http://en.wikipedia.org/wiki/Graph_isomorphism}
+	\bibitem{nodexl} NodeXL, 
+		\url{http://nodexl.codeplex.com/}
 \end{thebibliography}
 
 %end================bibliography======================
