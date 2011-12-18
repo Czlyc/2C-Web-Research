@@ -118,7 +118,7 @@ The data source used in this paper is "renren.com", which is the
 most popular SNS in mainland China. At the mean while, "renren.com" 
 has the following good characteristics:
 \begin{itemize}
-	\item Web UI of "3g.renren.com" is very clean. Cawling through
+	\item Web UI of "3g.renren.com" is very clean. Crawling through
 	this interface doesn't require any API calls.  
 	\item Renren is a real name dense graph connected mainly through 
 	real communities. Intuitively speaking, 
@@ -241,14 +241,39 @@ pre-processing to make NodeXL work:
 Note that "renren.com" is a dense graph. A typical node will have 
 more than 100 edges. This makes NodeXL hard to work. With random
 sampling, the topology can be visualized by NodeXL. fig(\ref{fig:topo_vis})
-shows the result. 
+shows the result, where pink nodes are in the same community with 
+observer, while blue nodes are not. 
 
-\begin{figure}
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=0.8\textwidth]{../visualization/sample1W_3.png}
 	\caption{Topology Visualization}
 	\label{fig:topo_vis}
 \end{figure}
+
+We extract all level one nodes and do the same visualization again. 
+fig(\ref{fig:topo_vis_l1}) shows the result. There are mainly three
+clusters(dense parts) on the graph. This is natural that our observer
+may belong to(or once belonged to) different communities. In the 
+pre-processing stage, we simply label the observer using his/her 
+largest community. Thus some very dense parts are marked blue in 
+the plot.  
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{../visualization/NodeXL_ClassNo.png}
+	\caption{Topology Visualization, Level 1 Nodes Only}
+	\label{fig:topo_vis_l1}
+\end{figure}
+
+The pre-visualization result proves our problem is tractable. However, 
+some true class nodes near the boundary of the graph lacks link information. 
+They may lower our recall. On the other hand, there exist other false class 
+nodes, which may correspond to popular public pages. Those nodes share 
+large amount links with the community members. Those nodes may lower
+our precision. Note the blue dense parts that those history communities
+of our observer will have very high similarity measure. They may also
+cause low precision. 
 
 \section{Notations}
 
@@ -480,7 +505,7 @@ No. & Abbrevation & Explanation \\
 \end{tabular}
 \end{table}
 
-\section{Single Feature Evalutaion}
+\section{Single Feature Evaluation}
 
 Before we start complex mining, we want to examine the 
 efficacy of those features we get. The ROC curve plots 
@@ -490,7 +515,7 @@ True Positive Ratio v.s. False Positive Ratio
 In this study, we evaluate each single feature's ROC by scaling 
 a threshold from smallest proximity measure to largest proximity 
 measure. Since all of our proximity measures are similarity 
-meausres, we proceed according to the following rule:
+measures, we proceed according to the following rule:
 \begin{enumerate}
 	\item Set a threshold of $T$. 
 	\item For each node $i$, judge its proximity measure $P_i$. 
@@ -515,16 +540,16 @@ meausres, we proceed according to the following rule:
 
 Note that a naive implementation of this ROC algorithm requires 
 $O(n^2)$ operation: first level iteration is to enumerate an $T$;
-second level iteration is to classify every ponit according to 
+second level iteration is to classify every point according to 
 $T$(and calculate TPR and FPR at the same time).
 
 We propose one efficient algorithm to calculate this kind of 
 threshold based ROC, which runs in $O(n)$ time. The algorithm 
-is put in Appdendix due to space limit. 
+is put in Appendix due to space limit. 
 
 We select observer 2 and draw 9 ROC curves. Two candidate 
 plots are selected in fig(\ref{fig:roc_selected}). For a full 
-gallary of 9 plots, please refer to Appendix. 
+gallery of 9 plots, please refer to Appendix. 
 
 \begin{figure}[htb]
 \centering
@@ -665,8 +690,6 @@ and at the same time avoid making the predication trivial.
 
 \subsection{MLP without Degree 1 Nodes}
 
-\question
-
 According to our previous statistics, large amount of nodes
 are of degree one. This doesn't necessarily mean the real 
 degree, but means the degree within our observation. 
@@ -754,7 +777,7 @@ a 100\% recall.
 
 If we limit our mining scope to only level 1 nodes, 
 the application can not be friend recommendation, since 
-they have alreay established one link with observer. 
+they have already established one link with observer. 
 Nevertheless, taking a look at the result is of great interest. 
 table(\ref{tbl:cm_o2_l1}) shows the result confusion matrix. 
 
@@ -776,7 +799,7 @@ The precision is 0.813, and the recall is 0.685.
 If we aim at the "community" defined as a group 
 of people sharing the same interest, rather than 
 those institutions, this result suggests targeted 
-advertisement can be performed effeciently. 
+advertisement can be performed efficiently. 
 
 
 \section{Conclusion}
@@ -825,7 +848,7 @@ is not abundant. In terms of data source, we propose
 two promising directions:
 \begin{enumerate}
 	\item Dynamic link information. "renren.com" is a very 
-	dense graph. However, many edges are not effetive in the sense
+	dense graph. However, many edges are not effective in the sense
 	that little information flow through them. We can 
 	build links using user interactions like status forwarding, 
 	blog reply, etc. 
@@ -865,7 +888,7 @@ have different preference of quality functions, to name a few:
 			\label{eq:ncut}	
 		\end{equation}
 		where $S$ is the set of one community, 
-		and $d(.)$ is the digree of a node, which is defined as 
+		and $d(.)$ is the degree of a node, which is defined as 
 		$d(i)=\sum_j{A_{ij}}$.
 		
 		The smaller the value, the better community detection quality. 
