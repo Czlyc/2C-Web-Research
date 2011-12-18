@@ -1,8 +1,17 @@
 #!/bin/bash
 
+#use this script with care!
+#the flowing directory must be set accordingly. 
+
 tmp="tmp.2" 
 raw="raw.2"
-output="o2"
+output="o2/data"
+
+#tmp: the 'tmp' of extractor.sh in 'feature-extraction'
+#raw: the raw directory, like 'data/raw/2'
+#output: set it as you wish 
+
+mkdir -p $output
 
 for i in \
  "$tmp/pr.all1" "$tmp/pr.root" \
